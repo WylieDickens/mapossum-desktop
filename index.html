@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mapossum Desktop Map</title>
+    <meta charset="utf-8" />
+    <link 
+        rel="stylesheet" 
+        href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css"
+    />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+        body {
+            height: 100%;
+            width: 100%;	
+        }
+		#header {
+            width: 100%;
+			height: 80px;
+			background: #ffa;
+			overflow: hidden;
+        }
+		#footer {
+            width: 100%;
+			height: 50px;
+			background: #faf;
+			overflow: hidden;
+        }
+		#map {
+			height:500px;
+            width: 700px;
+			overflow: hidden;
+        }
+		#control {
+            width: 100px;
+			float:left;
+			background: #aff;
+			height:500px;
+			overflow=y: auto;
+			overflow-x: hidden;
+        }
+		
+		.leaflet-control-attribution { display: none}
+		
+		/* Let's get this party started */
+		::-webkit-scrollbar {
+			width: 2px;
+		}
+		 
+		/* Track */
+		::-webkit-scrollbar-track {
+			-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+			-webkit-border-radius: 4px;
+			border-radius: 4px;
+		}
+		 
+		/* Handle */
+		::-webkit-scrollbar-thumb {
+			-webkit-border-radius: 4px;
+			border-radius: 4px; 
+			background: #bbb;
+			-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+		}
+		::-webkit-scrollbar-thumb:window-inactive {
+			background: rgba(0,0,0,0.4); 
+		}
+
+		::-webkit-scrollbar-thumb:window-inactive {
+		  width: 4px;
+		}
+
+		::-webkit-scrollbar-track:hover {
+		   width: 8px;
+		}
+
+		:hover::-webkit-scrollbar-thumb { 
+			background: rgba(0,0,0,0.8); 
+			}
+			
+		:hover::-webkit-scrollbar { 
+			width: 4px;
+			}
+
+    </style>
+</head>
+<body>
+
+<div id="header">Mapossum</div>
+<div id="control">Controls</div>
+<div id="map"></div>
+<div id="footer">Map Title Area</div>
+
+<script src="js/require.js" data-main="js/app"></script>
+
+</body>
+</html>
