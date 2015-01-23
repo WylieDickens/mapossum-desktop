@@ -173,19 +173,19 @@
 <div id="header"><div id="pagetitle">Mapossum <span id="pagesubtitle"> get your question mapped!</span></div></div>
 
 <div id="control">
-<div id="mapbutton" class="controlbutton">
+<div id="mapbutton" class="controlbutton" data-toggle="tooltip" data-placement="right" title="View the Map">
 	<div class="controltitle"> Map </div>
 </div>
-<div id="questionsbutton" class="controlbutton">
+<div id="questionsbutton" class="controlbutton" data-toggle="tooltip" data-placement="right" title="View, sort and query the list of questions currently in mapossum.">
 	<div class="controltitle"> Questions </div>
 </div>
-<div id="addbutton" class="controlbutton">
+<div id="addbutton" class="controlbutton" data-toggle="tooltip" data-placement="right" title="Add Your Own Question">
 	<div class="controltitle"> Add </div>
 </div>
-<div id="userbutton" class="controlbutton">
+<div id="userbutton" class="controlbutton" data-toggle="tooltip" data-placement="right" title="Login, Create a Free Account or Check your Settings">
 	<div class="controltitle"> User </div>
 </div>
-<div id="infobutton" class="controlbutton">
+<div id="infobutton" class="controlbutton" data-toggle="tooltip" data-placement="right" title="Learn more about Mapossum">
 	<div class="controltitle"> About </div>
 </div>
 </div>
@@ -200,11 +200,14 @@
 			</div>
 			<div class="row">
 				<div class="col-md-12">
-				  <table class="table">
+				  <table class="table table-hover table-condensed">
 					<thead>
 					  <tr>
 						<th>ID</th>
-						<th>Question</th>
+						<th>Question  
+						 <button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></button>
+						 <button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></button>
+						</th>
 						<th>Date / Time</th>
 						<th>Rank</th>
 					  </tr>

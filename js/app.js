@@ -40,7 +40,7 @@ define(['jquery', 'leaflet', 'bootstrap'], function($, L, bs) {
 		});
 		
 		transitionTo("mappanel");
-
+		 $('[data-toggle="tooltip"]').tooltip()
     }
   
     $( document ).ready( setup )
@@ -62,7 +62,7 @@ define(['jquery', 'leaflet', 'bootstrap'], function($, L, bs) {
 						$( el ).animate({
 							opacity: 0,
 						}, 500, function() {
-							
+							$(el).hide();
 						});
 					
 					
