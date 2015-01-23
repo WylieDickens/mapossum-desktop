@@ -16,13 +16,13 @@
         body {
             height: 100%;
             width: 100%;
-			font-family: "Trebuchet MS", Helvetica, sans-serif;			
+			font-family: "Trebuchet MS", Helvetica, sans-serif;	
+			background: #fff;			
         }
 		
 		#header {
             width: 100%;
 			height: 60px;
-			background: #fff;
 			overflow: hidden;
 
         }
@@ -43,7 +43,6 @@
 		#footer {
             width: 100%;
 			height: 50px;
-			background: #fff;
 			overflow: hidden;
 			text-align: center;
         }
@@ -57,6 +56,11 @@
 			height:500px;
             width: 700px;
 			overflow: hidden;
+	/*	This adds border and radius
+			border-style: solid;
+			border-width: 1px;
+			border-radius: 8px;
+			z-index: 0;   */
         }
 		
 		#mapbutton {
@@ -88,6 +92,7 @@
             width: 80px;
 			margin: 9px;
 			margin-bottom:15px; 
+			cursor: pointer;
 		}
 		
 		.controltitle {
@@ -101,7 +106,6 @@
 		#control {
             width: 100px;
 			float:left;
-			background: #fff;
 			height:500px;
 			overflow-y: auto;
 			overflow-x: hidden;
@@ -184,7 +188,14 @@
 </div>
 </div>
 
-<div id="map"><div id="addquestion" class="controlpanel"></div></div>
+<div id="map">
+
+	<div id="questionspanel" class="controlpanel"> <span style="font-size:100px;">Questions Panel</span> </div>
+	<div id="addpanel" class="controlpanel"> <span style="font-size:100px">Add Questions Panel</span> </div>
+	<div id="userpanel" class="controlpanel"> <span style="font-size:100px">User Panel</span> </div>
+	<div id="infopanel" class="controlpanel"> <span style="font-size:100px">Info Panel</span> </div>
+
+</div>
 
 <div id="footer"><div id="maptitle">Map Title Area</div></div>
 

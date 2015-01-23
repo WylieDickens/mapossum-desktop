@@ -32,6 +32,37 @@ define(['jquery', 'leaflet'], function($, L, bs) {
 					})
 		
 		map.addLayer(bwlayer);
+		
+		$(".controlbutton").click(function(e){
+			console.log("You clicked " + e.target.id);
+			if (e.target.id == "mapbutton") { 
+				  $( ".controlpanel" ).animate({
+					opacity: 0,
+				  }, 500, function() {
+					$( ".controlpanel" ).hide() 
+				  });
+			}
+			
+			else {
+			
+				$( ".controlpanel" ).css({"z-index": "4999"});
+				
+				panel = "#" + e.target.id.replace("button","panel");
+				$( panel ).css({"z-index": "5000"});
+				$( panel ).css({"opacity": 0});
+				$( panel ).show();
+				
+				  $( panel ).animate({
+					opacity: 1,
+				  }, 500, function() {
+					$( ".controlpanel" ).each(function( index, el ) {
+						if ( "#" + el.id != panel ) { $(el).hide(); } ;
+					});
+				  });
+				
+			}
+			
+		});
 
     }
   
@@ -44,8 +75,8 @@ define(['jquery', 'leaflet'], function($, L, bs) {
 	
 	
 	doLayout = function() {
-		mapwidth = $( window ).width() - $( "#control" ).width();
-		maphieght = $( window ).height() - $( "#header" ).height()- $( "#footer" ).height();
+		mapwidth = $( window ).width() - $( "#control" ).width(); //- 5;
+		maphieght = $( window ).height() - $( "#header" ).height() - $( "#footer" ).height();
 		$( "#map" ).css({"width": mapwidth + "px"});
 		$( "#map" ).css({"height": maphieght + "px"});
 		$( "#control" ).css({"height": maphieght + "px"});	
