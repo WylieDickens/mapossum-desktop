@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Mapossum Desktop Map</title>
     <meta charset="utf-8" />
@@ -7,7 +7,10 @@
         rel="stylesheet" 
         href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css"
     />
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
     <style>
         body {
             padding: 0;
@@ -50,12 +53,13 @@
 		#maptitle {
             padding: 5px;
 			font-size: 30px;
-        }		
+        }	
 		
-		#map {
+		#mainpanel {
 			height:500px;
             width: 700px;
 			overflow: hidden;
+			position: relative;
 	/*	This adds border and radius
 			border-style: solid;
 			border-width: 1px;
@@ -114,14 +118,12 @@
 		.controlpanel {
             width: 100%;
 			height: 100%;
-			position: absolute;
-			left: 0px;
+			opacity: 0;
+			background: #eee;
+			position:absolute;
 			top: 0px;
-			background: #fff;
-			z-index: 5000;
-			display: none;
-        }
-		
+			left: 0px;
+        }		
 		
 		.leaflet-control-attribution { display: none}
 		
@@ -188,12 +190,59 @@
 </div>
 </div>
 
-<div id="map">
+<div id="mainpanel">
+	
+	<div id="questionspanel" class="controlpanel"> 
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-8">Test</div>
+				<div class="col-md-4">Test</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+				  <table class="table">
+					<thead>
+					  <tr>
+						<th>ID</th>
+						<th>Question</th>
+						<th>Date / Time</th>
+						<th>Rank</th>
+					  </tr>
+					</thead>
+					<tbody>
+					  <tr>
+						<td>1</td>
+						<td>Do you like Turtles?</td>
+						<td>3423432</td>
+						<td>3242343</td>
+					  </tr>
+					  <tr>
+						<td>2</td>
+						<td>Do you like Turtles?</td>
+						<td>4444</td>
+						<td>3242</td>
+					  </tr>
+					  <tr>
+						<td>3</td>
+						<td>Do you like Turtles?</td>
+						<td>452345</td>
+						<td><button type="button" class="btn btn-lg btn-primary">Primary</button></td>
+					  </tr>
+					</tbody>
+				  </table>
+				</div>
+			</div>
+		</div>	
 
-	<div id="questionspanel" class="controlpanel"> <span style="font-size:100px;">Questions Panel</span> </div>
-	<div id="addpanel" class="controlpanel"> <span style="font-size:100px">Add Questions Panel</span> </div>
+	
+	</div>
+	<div id="addpanel" class="controlpanel"> 	
+		<span style="font-size:100px">Add Questions Panel</span>
+	</div>
 	<div id="userpanel" class="controlpanel"> <span style="font-size:100px">User Panel</span> </div>
 	<div id="infopanel" class="controlpanel"> <span style="font-size:100px">Info Panel</span> </div>
+	
+	<div id="mappanel" class="controlpanel">  </div>
 
 </div>
 
