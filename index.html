@@ -15,33 +15,109 @@
         }
         body {
             height: 100%;
-            width: 100%;	
+            width: 100%;
+			font-family: "Trebuchet MS", Helvetica, sans-serif;			
         }
+		
 		#header {
             width: 100%;
-			height: 80px;
-			background: #ffa;
+			height: 60px;
+			background: #fff;
 			overflow: hidden;
+
         }
+		
+		#pagetitle {
+            margin: 5px;
+			margin-left: 20px;
+			font-weight: bold;
+			font-size: 35px;
+			font-style: italic;			
+        }
+		
+		#pagesubtitle {
+			font-size: 20px;
+			color: #777;
+        }
+		
 		#footer {
             width: 100%;
 			height: 50px;
-			background: #faf;
+			background: #fff;
 			overflow: hidden;
+			text-align: center;
         }
+
+		#maptitle {
+            padding: 5px;
+			font-size: 30px;
+        }		
+		
 		#map {
 			height:500px;
             width: 700px;
 			overflow: hidden;
         }
+		
+		#mapbutton {
+			background-image: url("resources/images/map-icon.png");
+        }
+
+		#questionsbutton {
+			background-image: url("resources/images/listquestions.png");
+        }
+		
+		#addbutton {
+			background-image: url("resources/images/add_question.png");
+        }
+		
+		#userbutton {
+			background-image: url("resources/images/edit_user.png");
+        }
+
+		#infobutton {
+			background-image: url("resources/images/info.png");
+        }
+		
+		.controlbutton {
+			background-size: 70px 65px;
+			background-repeat: no-repeat;
+			background-position: center;
+			text-align: center;
+			height:80px;
+            width: 80px;
+			margin: 9px;
+			margin-bottom:15px; 
+		}
+		
+		.controltitle {
+			position:relative;
+			top: 72px;
+			font-family: "Trebuchet MS", Helvetica, sans-serif;
+			font-weight: bold;
+			font-size: 15px;
+		}
+		
 		#control {
             width: 100px;
 			float:left;
-			background: #aff;
+			background: #fff;
 			height:500px;
-			overflow=y: auto;
+			overflow-y: auto;
 			overflow-x: hidden;
         }
+		
+		.controlpanel {
+            width: 100%;
+			height: 100%;
+			position: absolute;
+			left: 0px;
+			top: 0px;
+			background: #fff;
+			z-index: 5000;
+			display: none;
+        }
+		
 		
 		.leaflet-control-attribution { display: none}
 		
@@ -88,10 +164,29 @@
 </head>
 <body>
 
-<div id="header">Mapossum</div>
-<div id="control">Controls</div>
-<div id="map"></div>
-<div id="footer">Map Title Area</div>
+<div id="header"><div id="pagetitle">Mapossum <span id="pagesubtitle"> get your question mapped!</span></div></div>
+
+<div id="control">
+<div id="mapbutton" class="controlbutton">
+	<div class="controltitle"> Map </div>
+</div>
+<div id="questionsbutton" class="controlbutton">
+	<div class="controltitle"> Questions </div>
+</div>
+<div id="addbutton" class="controlbutton">
+	<div class="controltitle"> Add </div>
+</div>
+<div id="userbutton" class="controlbutton">
+	<div class="controltitle"> User </div>
+</div>
+<div id="infobutton" class="controlbutton">
+	<div class="controltitle"> About </div>
+</div>
+</div>
+
+<div id="map"><div id="addquestion" class="controlpanel"></div></div>
+
+<div id="footer"><div id="maptitle">Map Title Area</div></div>
 
 <script src="js/require.js" data-main="js/app"></script>
 
