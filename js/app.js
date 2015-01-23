@@ -34,8 +34,24 @@ define(['jquery', 'leaflet'], function($, L, bs) {
 		map.addLayer(bwlayer);
 		
 		$(".controlbutton").click(function(e){
-			console.log("You clicked " + e.target.id);
-			if (e.target.id == "mapbutton") { 
+		
+			transitionTo(e.target.id);
+			
+		});
+
+    }
+  
+    $( document ).ready( setup )
+	
+	
+	$( window ).resize(function() {
+		doLayout();
+	});
+	
+	transitionTo = function(buttonClicked) {
+	
+			console.log("You clicked " + buttonClicked);
+			if (buttonClicked == "mapbutton") { 
 				  $( ".controlpanel" ).animate({
 					opacity: 0,
 				  }, 500, function() {
@@ -47,7 +63,7 @@ define(['jquery', 'leaflet'], function($, L, bs) {
 			
 				$( ".controlpanel" ).css({"z-index": "4999"});
 				
-				panel = "#" + e.target.id.replace("button","panel");
+				panel = "#" + buttonClicked.replace("button","panel");
 				$( panel ).css({"z-index": "5000"});
 				$( panel ).css({"opacity": 0});
 				$( panel ).show();
@@ -61,18 +77,8 @@ define(['jquery', 'leaflet'], function($, L, bs) {
 				  });
 				
 			}
-			
-		});
-
-    }
-  
-    $( document ).ready( setup )
 	
-	
-	$( window ).resize(function() {
-		doLayout();
-	});
-	
+	}
 	
 	doLayout = function() {
 		mapwidth = $( window ).width() - $( "#control" ).width(); //- 5;
