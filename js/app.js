@@ -35,7 +35,12 @@ define(['jquery', 'leaflet', 'bootstrap'], function($, L, bs) {
 		
 		$(".controlbutton").click(function(e){
 		
-			transitionTo(e.target.id);
+			if (e.target.className == "controltitle") {
+				targetOut = e.target.parentElement.id;
+			} else {
+				targetOut = e.target.id;
+			};
+			transitionTo(targetOut);
 			
 		});
 		
