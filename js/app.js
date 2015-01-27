@@ -44,7 +44,7 @@ define(['jquery', 'leaflet', 'bootstrap'], function($, L, bs) {
 			
 		});
 		
-		transitionTo("mappanel");
+		transitionTo("mapbutton");
 		 $('[data-toggle="tooltip"]').tooltip()
     }
   
@@ -66,7 +66,7 @@ define(['jquery', 'leaflet', 'bootstrap'], function($, L, bs) {
 					
 						$( el ).animate({
 							opacity: 0,
-						}, 500, function() {
+						}, 400, function() {
 							$(el).hide();
 						});
 					
@@ -74,22 +74,38 @@ define(['jquery', 'leaflet', 'bootstrap'], function($, L, bs) {
 					};
 				});
 				
+				$( ".controlbutton" ).each(function( index, el ) {
+					curop = $(el).css( "opacity" );
+					if ( el.id == buttonClicked ) { 
+					
+						$( el ).animate({
+							opacity: 1,
+						}, 300, function() {
+						
+						});
 				
-				//$( panel ).css({"z-index": "5000"});
+					} else {
+					
+						$( el ).animate({
+							opacity: 0.6,
+						}, 300, function() {
+						
+						});
+					
+					}
+				});
+				
+				
+	
 				$( panel ).css({"opacity": 0});
 				$( panel ).show();
 				
 				  $( panel ).animate({
 					opacity: 1,
-				  }, 500, function() {
-					
-				//	$( ".controlpanel" ).each(function( index, el ) {
-				//		if ( "#" + el.id != panel ) { $(el).hide(); } ;
-				//	});
+				  }, 400, function() {
+
 				  });
-				
-		//	}
-	
+
 	}
 	
 	doLayout = function() {
