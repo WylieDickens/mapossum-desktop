@@ -2,18 +2,31 @@ requirejs.config({
     appDir: ".",
     baseUrl: "js",
 	shim : {
-        "bootstrap" : { "deps" :['jquery'] }
+        "bootstrap" : { "deps" :['jquery'] },
+		"bootstrapGrid" : { "deps" :['jquery'] }
     },
     paths: { 
         /* Load jquery from google cdn. On fail, load local file. */
         'jquery': ['//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min', 'libs/jquery-min'],
         'leaflet': '//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.2/leaflet' ,
-		"bootstrap" :  "//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min"  
+		"bootstrap" :  "//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min",
+		"bootstrapGrid" :  "https://cdnjs.cloudflare.com/ajax/libs/jquery-bootgrid/1.1.4/jquery.bootgrid"
+	//	https://cdnjs.cloudflare.com/ajax/libs/jquery-bootgrid/1.1.4/jquery.bootgrid.min.js
     }
 });
 
-define(['jquery', 'leaflet', 'bootstrap'], function($, L, bs) {
-    
+define([
+		'jquery', 
+		'leaflet', 
+		'bootstrap',
+		"bootstrapGrid"
+		], 
+		function(
+		$, 
+		L, 
+		bs,
+		bg
+		) {
 	
   	console.log("loaded");
    
@@ -45,7 +58,9 @@ define(['jquery', 'leaflet', 'bootstrap'], function($, L, bs) {
 		});
 		
 		transitionTo("mapbutton");
-		 $('[data-toggle="tooltip"]').tooltip()
+		 $('[data-toggle="tooltip"]').tooltip();
+		 
+		 $("#grid-basic").bootgrid();
     }
   
     $( document ).ready( setup )
