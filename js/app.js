@@ -76,7 +76,7 @@ define([
 				console.log(response);
 				return response;
 			},
-			url: "http://services.mapossum.org:8080/getquestions",
+			url: "http://services.mapossum.org/getquestions",
 			formatters: {
 				"link": function(column, row)
 				{
