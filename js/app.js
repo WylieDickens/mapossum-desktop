@@ -60,7 +60,31 @@ define([
 		transitionTo("mapbutton");
 		 $('[data-toggle="tooltip"]').tooltip();
 		 
-		 $("#grid-basic").bootgrid();
+		$("#grid-data").bootgrid({
+			ajax: true,
+			requestHandler: function (request) {
+			
+				request.count = 5;
+				console.log(request);
+				return(request);
+			},
+			responseHandler: function (response)
+			{
+				response.rows = response.data;
+				response.current = 1;
+				response.rowCount = response.rows.length;
+				console.log(response);
+				return response;
+			},
+			url: "http://services.mapossum.org:8080/getquestions",
+			formatters: {
+				"link": function(column, row)
+				{
+					return "<a href=\"#\">" + column.id + ": " + row.id + "</a>";
+				}
+			}
+		});
+
     }
   
     $( document ).ready( setup )
