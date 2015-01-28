@@ -64,15 +64,16 @@ define([
 			ajax: true,
 			requestHandler: function (request) {
 			
-				request.count = 5;
+				request.count = 10; //number being requested as specified on Server
 				console.log(request);
 				return(request);
 			},
 			responseHandler: function (response)
 			{
 				response.rows = response.data;
-				response.current = 1;
-				response.rowCount = response.rows.length;
+				response.current = 1; //page
+				response.total = 20; //total
+				response.rowCount = response.rows.length;  //number of rows in output
 				console.log(response);
 				return response;
 			},
