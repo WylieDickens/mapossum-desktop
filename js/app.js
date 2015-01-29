@@ -10,8 +10,7 @@ requirejs.config({
         'jquery': ['//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min', 'libs/jquery-min'],
         'leaflet': '//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.2/leaflet' ,
 		"bootstrap" :  "//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min",
-		"bootstrapGrid" :  "//cdnjs.cloudflare.com/ajax/libs/jquery-bootgrid/1.1.4/jquery.bootgrid"
-	//	https://cdnjs.cloudflare.com/ajax/libs/jquery-bootgrid/1.1.4/jquery.bootgrid.min.js
+		"bootstrapGrid" :  "//cdnjs.cloudflare.com/ajax/libs/jquery-bootgrid/1.1.4/jquery.bootgrid"	
     }
 });
 
@@ -53,18 +52,20 @@ define([
 			} else {
 				targetOut = e.target.id;
 			};
-			transitionTo(targetOut);
-			
+			transitionTo(targetOut);			
 		});
 		
 		transitionTo("mapbutton");
+		
 		 $('[data-toggle="tooltip"]').tooltip();
 		 
 		$("#grid-data").bootgrid({
 			ajax: true,
+			caseSensitive: false,
+			searchable: true,
 			requestHandler: function (request) {
 			
-				request.count = 10; //number being requested as specified on Server
+				request.count = 100; //number being requested as specified on Server
 				console.log(request);
 				return(request);
 			},
@@ -72,12 +73,12 @@ define([
 			{
 				response.rows = response.data;
 				response.current = 1; //page
-				response.total = 20; //total
+				response.total = 100; //total
 				response.rowCount = response.rows.length;  //number of rows in output
 				console.log(response);
 				return response;
 			},
-			url: "http://services.mapossum.org/getquestions",
+			url: "http://services.mapossum.org/getquestions?count=100",
 			formatters: {
 				"link": function(column, row)
 				{
@@ -95,56 +96,54 @@ define([
 		doLayout();
 	});
 	
-	transitionTo = function(buttonClicked) {
-
-			console.log("You clicked " + buttonClicked);
+	transitionTo = function(buttonClicked) {			
 				
-				panel = "#" + buttonClicked.replace("button","panel");
-				
-				$( ".controlpanel" ).each(function( index, el ) {
-					if ( "#" + el.id != panel ) { 
-					
-						$( el ).animate({
-							opacity: 0,
-						}, 400, function() {
-							$(el).hide();
-						});
-					
-					
-					};
+		panel = "#" + buttonClicked.replace("button","panel");
+		
+		$( ".controlpanel" ).each(function( index, el ) {
+			if ( "#" + el.id != panel ) { 
+			
+				$( el ).animate({
+					opacity: 0,
+				}, 400, function() {
+					$(el).hide();
 				});
-				
-				$( ".controlbutton" ).each(function( index, el ) {
-					curop = $(el).css( "opacity" );
-					if ( el.id == buttonClicked ) { 
-					
-						$( el ).animate({
-							opacity: 1,
-						}, 300, function() {
-						
-						});
-				
-					} else {
-					
-						$( el ).animate({
-							opacity: 0.6,
-						}, 300, function() {
-						
-						});
-					
-					}
-				});
-				
-				
-	
-				$( panel ).css({"opacity": 0});
-				$( panel ).show();
-				
-				  $( panel ).animate({
+			
+			
+			};
+		});
+		
+		$( ".controlbutton" ).each(function( index, el ) {
+			curop = $(el).css( "opacity" );
+			if ( el.id == buttonClicked ) { 
+			
+				$( el ).animate({
 					opacity: 1,
-				  }, 400, function() {
+				}, 300, function() {
+				
+				});
+		
+			} else {
+			
+				$( el ).animate({
+					opacity: 0.6,
+				}, 300, function() {
+				
+				});
+			
+			}
+		});
+		
+		
 
-				  });
+		$( panel ).css({"opacity": 0});
+		$( panel ).show();
+		
+		  $( panel ).animate({
+			opacity: 1,
+		  }, 400, function() {
+
+		  });
 
 	}
 	
