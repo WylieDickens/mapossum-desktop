@@ -29,7 +29,7 @@ define([
 	
   	console.log("loaded");
    
-	var MAP
+	var MAP, questions, questionsGrid;
    
     setup = function() {
    
@@ -59,26 +59,27 @@ define([
 		
 		 $('[data-toggle="tooltip"]').tooltip();
 		 
-		$("#grid-data").bootgrid({
+		questionsGrid = $("#grid-data").bootgrid({
 			ajax: true,
 			caseSensitive: false,
-			searchable: true,
+			rowCount: [10, 25, 50],
 			requestHandler: function (request) {
 			
-				request.count = 100; //number being requested as specified on Server
+				request.count = 10; //number being requested as specified on Server
 				console.log(request);
 				return(request);
 			},
 			responseHandler: function (response)
 			{
 				response.rows = response.data;
-				response.current = 1; //page
-				response.total = 100; //total
+				response.current = 3; //page  to be done on server
+				response.total = 100; //total to be done on server
 				response.rowCount = response.rows.length;  //number of rows in output
 				console.log(response);
+				questions = response;
 				return response;
 			},
-			url: "http://services.mapossum.org/getquestions?count=100",
+			url: "http://services.mapossum.org/getquestions",
 			formatters: {
 				"link": function(column, row)
 				{
@@ -96,7 +97,16 @@ define([
 		doLayout();
 	});
 	
-	transitionTo = function(buttonClicked) {			
+	setupMap = function() {
+	
+		console.log("#######");
+		console.log(questions)
+		
+	}
+	
+	transitionTo = function(buttonClicked) {
+	
+		//$($(".next a")[0]).trigger("click");  trigger to move
 				
 		panel = "#" + buttonClicked.replace("button","panel");
 		
