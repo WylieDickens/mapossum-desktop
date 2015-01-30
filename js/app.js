@@ -29,8 +29,9 @@ define([
 	
   	console.log("loaded");
    
-	var MAP, questions, questionsGrid;
-   
+	var MAP, questions, questionsGrid, loggedIn = 0, clicked, userAcc=[];
+    var mpapp={userid:"", loggedUid:"",first:"", last:"", answerNum:"", qid:"", answer:"", curQuestion:"", curAnswers:"", picture:"", explain:""};
+    
     setup = function() {
    
 		doLayout();
@@ -89,7 +90,9 @@ define([
 		});
 
     }
-  
+
+   
+
     $( document ).ready( setup )
 	
 	
@@ -104,10 +107,15 @@ define([
 		
 	}
 	
+	/* function to change divs */
 	transitionTo = function(buttonClicked) {
+		if((buttonClicked === "userbutton" || buttonClicked === "addbutton") && loggedIn === 0){
+			clicked = buttonClicked;
+			$('#loginModal').modal('show')
+			return
+		}
 	
-		//$($(".next a")[0]).trigger("click");  trigger to move
-				
+		//$($(".next a")[0]).trigger("click");  trigger to move			
 		panel = "#" + buttonClicked.replace("button","panel");
 		
 		$( ".controlpanel" ).each(function( index, el ) {
@@ -123,6 +131,7 @@ define([
 			};
 		});
 		
+		/* fades the divs */
 		$( ".controlbutton" ).each(function( index, el ) {
 			curop = $(el).css( "opacity" );
 			if ( el.id == buttonClicked ) { 
@@ -143,20 +152,60 @@ define([
 			
 			}
 		});
-		
-		
 
 		$( panel ).css({"opacity": 0});
 		$( panel ).show();
 		
-		  $( panel ).animate({
+		$( panel ).animate({
 			opacity: 1,
-		  }, 400, function() {
+		}, 400, function() {
 
-		  });
+		});
 
 	}
-	
+
+	/* verify user login information -- if successful, user questions are stored for the account page*/
+	verify = function (email, password){
+	    $.getJSON( "http://services.mapossum.org/verify?email=" + email + "&password=" + password + "&callback=?", function( data ) {
+	      mpapp.userid = data.userid;
+	      if(data.userid != -1){	        
+	      	//$('#loginIcon').css( "background-color", "green" ); may use this later  	
+	      	mpapp.first = data.first
+	      	mpapp.last = data.last
+	      	mpapp.loggedUid = data.userid	      	
+	      	$.getJSON( "http://services.mapossum.org/getquestions?users=" + mpapp.loggedUid + "&minutes=0" + "&callback=?", function( userQuestions ) {
+	      		info = userQuestions.data      		     	
+	      		for(var i = 0; i < info.length; i++ ){ 
+	      			ques = {question:info[i].question, explain:info[i].explain, uid:info[i].userid, qid:info[i].qid, hashtag:info[i].hashtag}
+	      			userAcc.push(ques); 			
+	      		}	      		
+	      	});
+	      	if(clicked === "userbutton"){
+	      		loggedIn = 1;
+	      		$('#loginModal').modal('hide')
+	      		transitionTo("userbutton")
+	      	}
+	      	else if(clicked === "addbutton"){
+	      		loggedIn = 1;
+	      		$('#loginModal').modal('hide')
+	      		transitionTo("addbutton")
+	      	}
+	      }
+	      else{
+	      	alert(data.message)
+	      	$('#loginModal').modal('show')
+	      }
+	      
+	    });
+		
+		// if($("#checklogin").val() = true){  //not finding checkbox for some reason
+		// 	console.log(email +" in box" + password)
+		// 	localStorage.setItem("semail", email)
+	 //        localStorage.setItem("spassword", password)	        
+		// }
+	}
+
+	/* layout the page on a resize */
 	doLayout = function() {
 		mapwidth = $( window ).width() - $( "#control" ).width(); //- 5;
 		maphieght = $( window ).height() - $( "#header" ).height() - $( "#footer" ).height();
@@ -164,8 +213,22 @@ define([
 		$( "#mainpanel" ).css({"height": maphieght + "px"});
 		$( "#control" ).css({"height": maphieght + "px"});	
 	};
-     
-      
+
+	/* login click event */
+	$("#verify").bind('click', function(e) {
+		email = $("#txtUsername").val()
+		password = $("#txtPassword").val()  
+		verify(email, password)
+	});
+    
+ 	// sem = localStorage.semail;
+	// spass = localStorage.spassword;
+	// console.log(sem +" "+spass)
+
+	//  if (sem != undefined) {
+	// 	verify(sem,spass)
+	// }
+
     return {};
     
 });

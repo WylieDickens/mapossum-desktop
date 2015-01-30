@@ -1,161 +1,167 @@
 body {
             padding: 0;
             margin: 0;
-        }
-        body {
-            height: 100%;
-            width: 100%;
-			font-family: "Trebuchet MS", Helvetica, sans-serif;	
-			background: #fff;			
-        }
-        p {
-        	font-size:16px;
-        }
-		
-		#header {
-            width: 100%;
-			height: 60px;
-			overflow: hidden;
+}
+body {
+    height: 100%;
+    width: 100%;
+	font-family: "Trebuchet MS", Helvetica, sans-serif;	
+	background: #fff;			
+}
+.modal-content{
+	padding:15px;
+}
+.modal-header{
+	padding-left:0px;
+}
+p {
+	font-size:16px;
+}
 
-        }
-		
-		#pagetitle {
-            margin: 5px;
-			margin-left: 20px;
-			font-weight: bold;
-			font-size: 35px;
-			font-style: italic;			
-        }
-		
-		#pagesubtitle {
-			font-size: 20px;
-			color: #777;
-        }
-		
-		#footer {
-            width: 100%;
-			height: 50px;
-			overflow: hidden;
-			text-align: center;
-        }
+#header {
+    width: 100%;
+	height: 60px;
+	overflow: hidden;
 
-		#maptitle {
-            padding: 5px;
-			font-size: 30px;
-        }	
-		
-		#mainpanel {
-			height:500px;
-            width: 700px;
-			overflow: hidden;
-			position: relative;
-	/*	This adds border and radius
-			border-style: solid;
-			border-width: 1px;
-			border-radius: 8px;
-			z-index: 0;   */
-        }
-		
-		#mapbutton {
-			background-image: url("../resources/images/map-icon.png");
-        }
+}
 
-		#questionsbutton {
-			background-image: url("../resources/images/listquestions.png");
-        }
-		
-		#addbutton {
-			background-image: url("../resources/images/add_question.png");
-        }
-		
-		#userbutton {
-			background-image: url("../resources/images/edit_user.png");
-        }
+#pagetitle {
+    margin: 5px;
+	margin-left: 20px;
+	font-weight: bold;
+	font-size: 35px;
+	font-style: italic;			
+}
 
-		#infobutton {
-			background-image: url("../resources/images/info.png");
-        }
-		
-		.controlbutton {
-			background-size: 70px 65px;
-			background-repeat: no-repeat;
-			background-position: center;
-			text-align: center;
-			height:80px;
-            width: 80px;
-			margin: 9px;
-			margin-bottom:15px; 
-			cursor: pointer;
-			opacity: 0.6;
-		}
-		
-		.controltitle {
-			position:relative;
-			top: 72px;
-			font-family: "Trebuchet MS", Helvetica, sans-serif;
-			font-weight: bold;
-			font-size: 15px;
-		}
-		
-		#control {
-            width: 100px;
-			float:left;
-			height:500px;
-			overflow-y: auto;
-			overflow-x: hidden;
-        }
-		
-		.controlpanel {
-            width: 100%;
-			height: 100%;
-			opacity: 0;
-			background: #eee;
-			position:absolute;
-			top: 0px;
-			left: 0px;
-        }
+#pagesubtitle {
+	font-size: 20px;
+	color: #777;
+}
 
-        #questionsgrid{
-        	overflow: auto;
-        }	
-		
-		.leaflet-control-attribution { display: none}
-		
-		/* Let's get this party started */
-		::-webkit-scrollbar {
-			width: 2px;
-		}
-		 
-		/* Track */
-		::-webkit-scrollbar-track {
-			-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
-			-webkit-border-radius: 4px;
-			border-radius: 4px;
-		}
-		 
-		/* Handle */
-		::-webkit-scrollbar-thumb {
-			-webkit-border-radius: 4px;
-			border-radius: 4px; 
-			background: #bbb;
-			-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
-		}
-		::-webkit-scrollbar-thumb:window-inactive {
-			background: rgba(0,0,0,0.4); 
-		}
+#footer {
+    width: 100%;
+	height: 50px;
+	overflow: hidden;
+	text-align: center;
+}
 
-		::-webkit-scrollbar-thumb:window-inactive {
-		  width: 4px;
-		}
+#maptitle {
+    padding: 5px;
+	font-size: 30px;
+}	
 
-		::-webkit-scrollbar-track:hover {
-		   width: 8px;
-		}
+#mainpanel {
+	height:500px;
+    width: 700px;
+	overflow: hidden;
+	position: relative;
+/*	This adds border and radius
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 8px;
+	z-index: 0;   */
+}
 
-		:hover::-webkit-scrollbar-thumb { 
-			background: rgba(0,0,0,0.8); 
-			}
-			
-		:hover::-webkit-scrollbar { 
-			width: 4px;
-			}
+#mapbutton {
+	background-image: url("../resources/images/map-icon.png");
+}
+
+#questionsbutton {
+	background-image: url("../resources/images/listquestions.png");
+}
+
+#addbutton {
+	background-image: url("../resources/images/add_question.png");
+}
+
+#userbutton {
+	background-image: url("../resources/images/edit_user.png");
+}
+
+#infobutton {
+	background-image: url("../resources/images/info.png");
+}
+
+.controlbutton {
+	background-size: 70px 65px;
+	background-repeat: no-repeat;
+	background-position: center;
+	text-align: center;
+	height:80px;
+    width: 80px;
+	margin: 9px;
+	margin-bottom:15px; 
+	cursor: pointer;
+	opacity: 0.6;
+}
+
+.controltitle {
+	position:relative;
+	top: 72px;
+	font-family: "Trebuchet MS", Helvetica, sans-serif;
+	font-weight: bold;
+	font-size: 15px;
+}
+
+#control {
+    width: 100px;
+	float:left;
+	height:500px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.controlpanel {
+    width: 100%;
+	height: 100%;
+	opacity: 0;
+	background: #eee;
+	position:absolute;
+	top: 0px;
+	left: 0px;
+}
+
+#questionsgrid{
+	overflow: auto;
+}	
+
+.leaflet-control-attribution { display: none}
+
+/* Let's get this party started */
+::-webkit-scrollbar {
+	width: 2px;
+}
+ 
+/* Track */
+::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+	-webkit-border-radius: 4px;
+	border-radius: 4px; 
+	background: #bbb;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+::-webkit-scrollbar-thumb:window-inactive {
+	background: rgba(0,0,0,0.4); 
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track:hover {
+   width: 8px;
+}
+
+:hover::-webkit-scrollbar-thumb { 
+	background: rgba(0,0,0,0.8); 
+	}
+	
+:hover::-webkit-scrollbar { 
+	width: 4px;
+	}
