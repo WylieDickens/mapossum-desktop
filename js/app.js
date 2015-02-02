@@ -90,10 +90,6 @@ define([
 		});
 
     }
-
-   
-
-    $( document ).ready( setup )
 	
 	
 	$( window ).resize(function() {
@@ -229,6 +225,8 @@ define([
 	// 	verify(sem,spass)
 	// }
 
+	$( document ).ready( setup )
+	
     return {};
     
 });
