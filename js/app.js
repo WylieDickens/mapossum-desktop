@@ -66,21 +66,20 @@ define([
 			rowCount: [10, 25, 50],
 			requestHandler: function (request) {
 			
-				request.count = 10; //number being requested as specified on Server
+				request.count = request.rowCount;
 				console.log(request);
 				return(request);
 			},
 			responseHandler: function (response)
 			{
 				response.rows = response.data;
-				response.current = 3; //page  to be done on server
-				response.total = 100; //total to be done on server
+				//response.total = 100; //total to be done on server
 				response.rowCount = response.rows.length;  //number of rows in output
 				console.log(response);
 				questions = response;
 				return response;
 			},
-			url: "http://services.mapossum.org/getquestions",
+			url: "http://127.0.0.1:8080/getquestions",
 			formatters: {
 				"link": function(column, row)
 				{

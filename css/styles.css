@@ -122,8 +122,13 @@ p {
 }
 
 #questionsgrid{
-	overflow: auto;
 }	
+
+#questionsgridcont{
+	overflow: auto;
+	
+	height: 100%;
+}
 
 .leaflet-control-attribution { display: none}
 
