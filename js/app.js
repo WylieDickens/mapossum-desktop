@@ -79,14 +79,35 @@ define([
 				questions = response;
 				return response;
 			},
-			url: "http://127.0.0.1:8080/getquestions",
+			url: "http://services.mapossum.org/getquestions",
 			formatters: {
-				"link": function(column, row)
+			//	"link": function(column, row)
+		//		{
+		//			alert('');
+		//			return "<a href=\"#\">" + column.id + ": " + row.id + "</a>";
+			//	},
+				"commands": function(column, row)
 				{
-					return "<a href=\"#\">" + column.id + ": " + row.id + "</a>";
+
+					return "<button type=\"button\" class=\"btn btn-xs btn-default command-map\" data-row-id=\"" + row.qid + "\"><span class=\"fa fa-globe\"></span></button> " + 
+						   "<button type=\"button\" class=\"btn btn-xs btn-default command-chart\" data-row-id=\"" + row.qid + "\"><span class=\"fa fa-bar-chart\"></span></button>" + 
+						   "<button style='margin-left:4px' type=\"button\" class=\"btn btn-xs btn-default command-download\" data-row-id=\"" + row.qid + "\"><span class=\"fa fa-cloud-download\"></span></button>";
 				}
 			}
-		});
+		}).on("loaded.rs.jquery.bootgrid", function()
+				{
+					/* Executes after data is loaded and rendered */
+					questionsGrid.find(".command-map").on("click", function(e)
+					{
+						alert("You pressed map on row: " + $(this).data("row-id"));
+					}).end().find(".command-chart").on("click", function(e)
+					{
+						alert("You pressed chart on row: " + $(this).data("row-id"));
+					}).end().find(".command-download").on("click", function(e)
+					{
+						alert("You pressed download on row: " + $(this).data("row-id"));
+					});
+				});
 
     }
 	
