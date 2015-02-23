@@ -48,6 +48,7 @@ p {
 #maptitle {
     padding: 5px;
 	font-size: 30px;
+	display: inline-block;
 }	
 
 #mainpanel {
@@ -75,11 +76,46 @@ p {
 }
 
 #userbutton {
-	background-image: url("../resources/images/edit_user.png");
+	background-image: url("../resources/images/settings.png");
+}
+
+#answerbutton {
+	background-image: url("../resources/images/check.png");
 }
 
 #infobutton {
 	background-image: url("../resources/images/info.png");
+}
+
+#previousQuestion {
+	background-image: url("../resources/images/left.png");
+	background-size: 40px 40px;
+	background-repeat: no-repeat;
+	background-position: center;
+	text-align: center;
+	height:40px;
+    width: 40px;
+	cursor: pointer;
+	opacity: 0.6;
+	margin: 5px;
+	margin-left: 100px;
+	float: left;
+	display: inline-block;
+}
+
+#nextQuestion {
+	background-image: url("../resources/images/right.png");
+	background-size: 40px 40px;
+	background-repeat: no-repeat;
+	background-position: center;
+	text-align: center;
+	height:40px;
+    width: 40px;
+	float: right;
+	margin: 5px;
+	cursor: pointer;
+	opacity: 0.6;
+	display: inline-block;
 }
 
 .controlbutton {

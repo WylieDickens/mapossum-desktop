@@ -125,7 +125,7 @@ define([
 	
 	/* function to change divs */
 	transitionTo = function(buttonClicked) {
-		if((buttonClicked === "userbutton" || buttonClicked === "addbutton") && loggedIn === 0){
+		if((buttonClicked == "userbutton" || buttonClicked == "addbutton") && loggedIn == 0){
 			clicked = buttonClicked;
 			$('#loginModal').modal('show')
 			return
@@ -133,6 +133,15 @@ define([
 	
 		//$($(".next a")[0]).trigger("click");  trigger to move			
 		panel = "#" + buttonClicked.replace("button","panel");
+		
+		if ($(panel)[0] == undefined) {
+		
+			
+		
+		
+		} else {
+		
+		
 		
 		$( ".controlpanel" ).each(function( index, el ) {
 			if ( "#" + el.id != panel ) { 
@@ -178,6 +187,7 @@ define([
 
 		});
 
+		}
 	}
 
 	/* verify user login information -- if successful, user questions are stored for the account page*/
