@@ -49,6 +49,9 @@ p {
     padding: 5px;
 	font-size: 30px;
 	display: inline-block;
+	width: 700px;
+	height: 50px;
+	overflow: auto;
 }	
 
 #mainpanel {

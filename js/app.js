@@ -126,26 +126,50 @@ define([
 		curIndex += 1
 		console.log(curIndex)
 		if(curIndex == 10){
-			$($(".next a")[0]).trigger("click")
+			pbut = $($(".next a")[0]);
+			pbut.trigger("click");
 			return
 		}
 		else{
 			gotoquestion(questions[curIndex])
 		}		
-
+		disableButtons();
 	});
+	
+	isFinal = function(buttonClass){
+			pbut = $($("." + buttonClass + " a")[0]);
+			pbutDaddy = pbut.parent()[0];
+			return (pbutDaddy.className.indexOf("disabled") > -1);
+	}
+	
+	disableButtons = function() {
+
+			if (isFinal("prev") && (curIndex == 0)) {
+				$("#previousQuestion").css({"opacity": 0.08})
+			} else {
+				$("#previousQuestion").css({"opacity": 0.6})
+			}
+			console.log(curIndex, questions.length)
+			if (isFinal("next") && (curIndex == questions.length-1)) {
+				$("#nextQuestion").css({"opacity": 0.08})
+			} else {
+				$("#nextQuestion").css({"opacity": 0.6})
+			}
+	
+	}
 
 	$("#previousQuestion").bind('click', function(){		
 		curIndex -= 1
 		console.log(curIndex)
-		if(curIndex == -1){			
-			$($(".prev a")[0]).trigger("click")
+		if(curIndex == -1){		
+			$($(".prev a")[0]).trigger("click");
 			return
 		}
 		else{
 			gotoquestion(questions[curIndex])
-		}		
-
+		}	
+		
+		disableButtons();
 	});
 
 
@@ -268,9 +292,13 @@ define([
 	doLayout = function() {
 		mapwidth = $( window ).width() - $( "#control" ).width(); //- 5;
 		maphieght = $( window ).height() - $( "#header" ).height() - $( "#footer" ).height();
+		titleWidth = mapwidth - $( "#nextQuestion" ).width() - $( "#previousQuestion" ).width() - 20;  // this last number has to be total of the margins and padding for each element in the footing area is.
+		
 		$( "#mainpanel" ).css({"width": mapwidth + "px"});
 		$( "#mainpanel" ).css({"height": maphieght + "px"});
 		$( "#control" ).css({"height": maphieght + "px"});	
+		$( "#maptitle" ).css({"width": titleWidth + "px"});
+		
 	};
 
 	$.fn.autoSizr = function () {
@@ -300,6 +328,7 @@ define([
 	  return $(this); 
 	};
 
+	
 
 	/* login click event */
 	$("#verify").bind('click', function(e) {
