@@ -29,8 +29,7 @@ define([
 	
   	console.log("loaded");
    
-	var MAP, questions, questionsGrid, loggedIn = 0, clicked, userAcc=[];
-    var mpapp={userid:"", loggedUid:"",first:"", last:"", answerNum:"", qid:"", answer:"", curQuestion:"", curAnswers:"", picture:"", explain:""};
+	var MAP, questions, questionsGrid, loggedIn = 0, clicked, userAcc=[], mapType = "subs", curIndex;
     
     setup = function() {
    
@@ -64,10 +63,8 @@ define([
 			ajax: true,
 			caseSensitive: false,
 			rowCount: [10, 25, 50],
-			requestHandler: function (request) {
-			
+			requestHandler: function (request) {				
 				request.count = request.rowCount;
-				console.log(request);
 				return(request);
 			},
 			responseHandler: function (response)
@@ -75,17 +72,14 @@ define([
 				response.rows = response.data;
 				//response.total = 100; //total to be done on server
 				response.rowCount = response.rows.length;  //number of rows in output
-				console.log(response);
-				questions = response;
+				questions = response.data;
+				console.log(questions)
+				curIndex = 0;
+				gotoquestion(questions[curIndex])			
 				return response;
 			},
 			url: "http://services.mapossum.org/getquestions",
 			formatters: {
-			//	"link": function(column, row)
-		//		{
-		//			alert('');
-		//			return "<a href=\"#\">" + column.id + ": " + row.id + "</a>";
-			//	},
 				"commands": function(column, row)
 				{
 
@@ -98,14 +92,26 @@ define([
 				{
 					/* Executes after data is loaded and rendered */
 					questionsGrid.find(".command-map").on("click", function(e)
-					{
-						alert("You pressed map on row: " + $(this).data("row-id"));
+					{	
+						cqid = $(this).data("row-id")
+						$.each(questions, function( index, value ) {												
+							if(value.qid == cqid){
+								curIndex = index
+								gotoquestion(value)
+								transitionTo('mapbutton')
+								return
+							}
+						});
+						
 					}).end().find(".command-chart").on("click", function(e)
 					{
 						alert("You pressed chart on row: " + $(this).data("row-id"));
 					}).end().find(".command-download").on("click", function(e)
-					{
-						alert("You pressed download on row: " + $(this).data("row-id"));
+					{						
+						link = document.createElement("a")
+						link.href = "http://services.mapossum.org/download/" + $(this).data("row-id") + ".csv"					
+						link.click()
+						$('#downloadModal').modal('show'); 	
 					});
 				});
 
@@ -115,12 +121,39 @@ define([
 	$( window ).resize(function() {
 		doLayout();
 	});
-	
-	setupMap = function() {
-	
-		console.log("#######");
-		console.log(questions)
-		
+
+	$("#nextQuestion").bind('click', function(){		
+		curIndex += 1
+		console.log(curIndex)
+		if(curIndex == 10){
+			$($(".next a")[0]).trigger("click")
+			return
+		}
+		else{
+			gotoquestion(questions[curIndex])
+		}		
+
+	});
+
+	$("#previousQuestion").bind('click', function(){		
+		curIndex -= 1
+		console.log(curIndex)
+		if(curIndex == -1){			
+			$($(".prev a")[0]).trigger("click")
+			return
+		}
+		else{
+			gotoquestion(questions[curIndex])
+		}		
+
+	});
+
+
+	gotoquestion = function(row){
+		console.log(row)		
+		$("#maptitle").html( '<center>' + row.question + '</center>' );
+		$("#maptitle").css('font-size', "30px");
+		$("#maptitle").autoSizr();			
 	}
 	
 	/* function to change divs */
@@ -239,6 +272,34 @@ define([
 		$( "#mainpanel" ).css({"height": maphieght + "px"});
 		$( "#control" ).css({"height": maphieght + "px"});	
 	};
+
+	$.fn.autoSizr = function () {
+	  var el, elements, _i, _len, _results;
+
+	  elements = $(this);
+	  if (elements.length < 0) {
+	    return;
+	  }
+	  _results = [];
+	  for (_i = 0, _len = elements.length; _i < _len; _i++) {
+	    el = elements[_i];
+	    _results.push((function(el) {
+	      var resizeText, _results1;
+	      resizeText = function() {
+	        var elNewFontSize;
+	        elNewFontSize = (parseInt($(el).css('font-size').slice(0, -2)) - 1) + 'px';
+	        return $(el).css('font-size', elNewFontSize);
+	      };
+	      _results1 = [];
+	      while (el.scrollHeight > el.offsetHeight) {
+	        _results1.push(resizeText());
+	      }
+	      return _results1;
+	    })(el));
+	  }
+	  return $(this); 
+	};
+
 
 	/* login click event */
 	$("#verify").bind('click', function(e) {
