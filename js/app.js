@@ -74,8 +74,7 @@ define([
 				response.rowCount = response.rows.length;  //number of rows in output
 				questions = response.data;
 				console.log(questions)
-				curIndex = 0;
-				gotoquestion(questions[curIndex])			
+				curIndex = 0;			
 				return response;
 			},
 			url: "http://services.mapossum.org/getquestions",
@@ -90,6 +89,7 @@ define([
 			}
 		}).on("loaded.rs.jquery.bootgrid", function()
 				{
+					gotoquestion(questions[curIndex]);
 					/* Executes after data is loaded and rendered */
 					questionsGrid.find(".command-map").on("click", function(e)
 					{	
@@ -174,11 +174,30 @@ define([
 
 
 	gotoquestion = function(row){
-		console.log(row)		
+		//console.log(row)		
 		$("#maptitle").html( '<center>' + row.question + '</center>' );
 		$("#maptitle").css('font-size', "30px");
-		$("#maptitle").autoSizr();			
+		$("#maptitle").autoSizr();
+		
+		disableButtons();
+		
+		highlightCurrentRow();
+		
 	}
+	
+	highlightCurrentRow = function() {
+		
+		questionsGrid.find('tr').each(function( index, el ) {
+			$(el).css({"background": ""})
+		});
+		
+		
+		cgridrow = questionsGrid.find('[data-row-id=' + curIndex + ']')[0]
+		console.log(cgridrow);
+		$(cgridrow).css({"background": "#ADCAE2"})
+		
+	}
+	
 	
 	/* function to change divs */
 	transitionTo = function(buttonClicked) {
