@@ -66,6 +66,23 @@ p {
 	z-index: 0;   */
 }
 
+.maptypeDD{
+	font-family: "Trebuchet MS", Helvetica, sans-serif;	
+	position:absolute;
+	left:43px;
+	top: 10px;
+	z-index: 5000;
+}
+
+#maplegend{
+	position:absolute;
+	right:5px;
+	bottom: 5px;
+	z-index: 5000;
+	background: rgba(255,255,255,.4);
+	padding:5px;	
+}
+
 #mapbutton {
 	background-image: url("../resources/images/map-icon.png");
 }

@@ -29,13 +29,13 @@ define([
 	
   	console.log("loaded");
    
-	var MAP, questions, questionsGrid, loggedIn = 0, clicked, userAcc=[], mapType = "subs", curIndex;
+	var MAP, questions, questionsGrid, loggedIn = 0, clicked, userAcc=[], mapType = "subs", curIndex, mapossumLayer, mapAdded = false, maptype = "subs", legendsize;
     
     setup = function() {
    
 		doLayout();
 		
-		MAP = L.map('mappanel', {trackResize:true, maxZoom:18}).setView([31.328920, -89.333514], 10);
+		MAP = L.map('mappanel', {trackResize:true, maxZoom:18}).setView([0,0], 2);
 		
 		var bwlayer = L.tileLayer(
 					'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -44,7 +44,14 @@ define([
 					})
 		
 		MAP.addLayer(bwlayer);
-		
+
+		$($('.maptypeDD')[0]).find("a").on('click', function (el) {
+			console.log(el.target)
+			maptype = $(el.target).data("maptype")
+			changemapType(maptype)
+		})
+  
+
 		$(".controlbutton").click(function(e){
 		
 			if (e.target.className == "controltitle") {
@@ -88,7 +95,7 @@ define([
 				}
 			}
 		}).on("loaded.rs.jquery.bootgrid", function()
-				{
+				{						
 					gotoquestion(questions[curIndex]);
 					/* Executes after data is loaded and rendered */
 					questionsGrid.find(".command-map").on("click", function(e)
@@ -173,8 +180,17 @@ define([
 	});
 
 
-	gotoquestion = function(row){
-		//console.log(row)		
+	gotoquestion = function(row, zoom){
+		if(mapAdded == false){						
+			d = new Date();
+			iv = d.getTime();		 
+			mapossumLayer = L.tileLayer('http://maps.mapossum.org/{qid}/{maptype}/{z}/{x}/{y}.png?v={v}', {maptype: maptype, qid:questions[curIndex].qid, v: iv, opacity: 0.7})
+			mapossumLayer.addTo(MAP);
+			mapAdded = true;						
+		}
+		else{			
+			changeQuestion(questions[curIndex].qid);
+		}	
 		$("#maptitle").html( '<center>' + row.question + '</center>' );
 		$("#maptitle").css('font-size', "30px");
 		$("#maptitle").autoSizr();
@@ -182,8 +198,49 @@ define([
 		disableButtons();
 		
 		highlightCurrentRow();
+		getLegend(questions[curIndex].qid)
+
+		if (zoom == undefined) {
+			getExtent(questions[curIndex].qid)
+		} 	
 		
 	}
+
+	getExtent = function(qid){	
+		$.getJSON( "http://services.mapossum.org/getextent/"+ qid + "/" + maptype + "?callback=?", function( data ) {      	
+	 		minExtent = data[0]; 		
+	 		maxExtent = data[1];
+	 		bounds = [minExtent, maxExtent];  			
+	 		fitBounds(bounds)
+	 	});
+	}
+
+	fitBounds = function(bounds){	
+		MAP.fitBounds(bounds, {padding:0});
+	}
+
+	changemapType = function(newMapType) {
+		maptype = newMapType
+	 	mapossumLayer.options.maptype = newMapType
+	 	mapossumLayer.redraw();
+	 	//updateHash();
+	}
+
+	changeQuestion = function(qid) {	    
+		mapossumLayer.options.qid = qid
+		mapossumLayer.redraw();
+		//updateHash();
+	}
+
+	getLegend = function(qid){
+		console.log('here' + qid)
+		d = new Date();
+		iv = d.getTime(); 		
+		$("#maplegend").empty();			    	
+		legendImage = $('<img src="http://services.mapossum.org/legend/' +qid+'?v='+ iv + '&opacity=0&color=black" width="' + legendsize + '">')
+		legendImage.appendTo('#maplegend').trigger( "create" )
+	}
+
 	
 	highlightCurrentRow = function() {
 		
@@ -299,12 +356,6 @@ define([
 	      }
 	      
 	    });
-		
-		// if($("#checklogin").val() = true){  //not finding checkbox for some reason
-		// 	console.log(email +" in box" + password)
-		// 	localStorage.setItem("semail", email)
-	 //        localStorage.setItem("spassword", password)	        
-		// }
 	}
 
 	/* layout the page on a resize */
@@ -312,7 +363,12 @@ define([
 		mapwidth = $( window ).width() - $( "#control" ).width(); //- 5;
 		maphieght = $( window ).height() - $( "#header" ).height() - $( "#footer" ).height();
 		titleWidth = mapwidth - $( "#nextQuestion" ).width() - $( "#previousQuestion" ).width() - 20;  // this last number has to be total of the margins and padding for each element in the footing area is.
+		legendsize = mapwidth/8
 		
+		if(questions != undefined){
+			getLegend(questions[curIndex].qid)
+		}
+
 		$( "#mainpanel" ).css({"width": mapwidth + "px"});
 		$( "#mainpanel" ).css({"height": maphieght + "px"});
 		$( "#control" ).css({"height": maphieght + "px"});	
@@ -345,9 +401,7 @@ define([
 	    })(el));
 	  }
 	  return $(this); 
-	};
-
-	
+	};	
 
 	/* login click event */
 	$("#verify").bind('click', function(e) {

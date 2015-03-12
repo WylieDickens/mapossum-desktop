@@ -77,11 +77,27 @@
 		<div id="userpanel" class="controlpanel"> <span style="font-size:100px">User Panel</span> </div>
 		<div id="infopanel" class="controlpanel"> <p>The Mapossum, originally inspired by the pop vs soda map (www.popvssoda.com) is a web application that allows users to visualize spatial patterns in the questions they pose without the need to possess the knowledge necessary to create web maps on their own. The application is a spatial web-survey system that harnesses the visualization power of a web map to explore the spatial components of question. Users have the ability to create questions and the possible responses to these questions, as well as query the responses. The creation of questions and the logging of spatially referenced responses lead to answers that can be mapped as points, or aggregated at various levels of administrative or political units (counties, states, countries). The application has potential to be used as a general data collection tool for those collecting data across broad areas and populations. Built on open source software, The Mapossum stands to provide geographical information of a wide variety across wide geographical, even global, regions that previously would have been logistically challenging or impossible.  Through this, it may reveal a different dimension of spatial interactions, and provide more insight into cultural and regional interactions.</p></div>
 		
-		<div id="mappanel" class="controlpanel">  </div>
+		<div id="mappanel" class="controlpanel">
+			<div class="dropdown maptypeDD">
+				<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+				Map Type
+				<span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+					<li role="presentation"><a role="menuitem" tabindex="-1" data-maptype="points" href="#">Points</a></li>
+					<li role="presentation"><a role="menuitem" tabindex="-1" data-maptype="counties" href="#">Counties</a></li>
+					<li role="presentation"><a role="menuitem" tabindex="-1" data-maptype="subs" href="#">Sub-Country (ie. states) </a></li>
+					<li role="presentation"><a role="menuitem" tabindex="-1" data-maptype="countries" href="#">Countries</a></li>
+					<li role="presentation"><a role="menuitem" tabindex="-1" data-maptype="watercolor" href="#">Watercolor</a></li>
+				</ul>
+			</div>
+		</div>
+
+		<div id="maplegend"></div>
 
 	</div>
 
-	<div id="footer"><div id="previousQuestion" data-toggle="tooltip" data-placement="right" title="View the Previous Question"></div><div id="maptitle">Map Title Area</div><div id="nextQuestion"data-toggle="tooltip" data-placement="left" title="View the Next Question"></div></div>
+	<div id="footer"><div id="previousQuestion" data-toggle="tooltip" data-placement="right" title="View the Previous Question"></div><div id="maptitle"></div><div id="nextQuestion"data-toggle="tooltip" data-placement="left" title="View the Next Question"></div></div>
 
 	<div class="modal fade" id="loginModal">
 	  <div class="modal-dialog">
@@ -119,7 +135,7 @@
 	<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="downloadModal">
 	  <div class="modal-dialog modal-sm">
 	    <div class="modal-content">
-	      <p><i>You download make take a couple of mintues based on the number of answers for the question...</i></p>
+	      <p><i>You download make take up to a minute based on how many answers are associated with the question...</i></p>
 	    </div>
 	  </div>
 	</div>
