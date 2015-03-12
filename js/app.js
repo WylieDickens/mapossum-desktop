@@ -18,22 +18,28 @@ define([
 		'jquery', 
 		'leaflet', 
 		'bootstrap',
-		"bootstrapGrid"
+		"bootstrapGrid",
+		"answerPanel"
 		], 
 		function(
 		$, 
 		L, 
 		bs,
-		bg
+		bg,
+		answerPanel
 		) {
 	
   	console.log("loaded");
    
 	var MAP, questions, questionsGrid, loggedIn = 0, clicked, userAcc=[], mapType = "subs", curIndex, mapossumLayer, mapAdded = false, maptype = "subs", legendsize;
     
+	var ap = new answerPanel("answerpanel");
+	
     setup = function() {
    
 		doLayout();
+		
+		console.log(ap);
 		
 		MAP = L.map('mappanel', {trackResize:true, maxZoom:18}).setView([0,0], 2);
 		
@@ -199,6 +205,7 @@ define([
 		
 		highlightCurrentRow();
 		getLegend(questions[curIndex].qid)
+		ap.gotoQuestion(questions[curIndex].qid);
 
 		if (zoom == undefined) {
 			getExtent(questions[curIndex].qid)

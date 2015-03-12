@@ -167,6 +167,10 @@ p {
 	overflow-x: hidden;
 }
 
+#answerpanel {
+	padding: 10px;
+}
+
 .controlpanel {
     width: 100%;
 	height: 100%;
