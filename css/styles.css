@@ -73,7 +73,9 @@ p {
 	top: 10px;
 	z-index: 5000;
 }
-
+#locMap{
+	height:500px;
+}
 #maplegend{
 	position:absolute;
 	right:5px;

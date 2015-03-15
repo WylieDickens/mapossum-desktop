@@ -30,17 +30,17 @@ define([
 		) {
 	
   	console.log("loaded");
-   
-	var MAP, questions, questionsGrid, loggedIn = 0, clicked, userAcc=[], mapType = "subs", curIndex, mapossumLayer, mapAdded = false, maptype = "subs", legendsize;
+
+	var MAP, questions, questionsGrid, loggedIn = 0, clicked, userAcc=[], mapType = "subs", curIndex, mapossumLayer, mapAdded = false, maptype = "subs", legendsize, curlatlon;
     
 	var ap = new answerPanel("answerpanel");
 	
     setup = function() {
-   
+   	
 		doLayout();
-		
-		console.log(ap);
-		
+
+		navigator.geolocation.getCurrentPosition(setlocation,showError);
+
 		MAP = L.map('mappanel', {trackResize:true, maxZoom:18}).setView([0,0], 2);
 		
 		var bwlayer = L.tileLayer(
@@ -185,6 +185,11 @@ define([
 		disableButtons();
 	});
 
+	$("#subAnswer").bind('click', function(){
+		console.log(curlatlon)			
+		ap.pushAnswer(questions[curIndex].qid, $('input[name=ansRadio]:checked').val(), curlatlon )
+	});
+
 
 	gotoquestion = function(row, zoom){
 		if(mapAdded == false){						
@@ -205,6 +210,7 @@ define([
 		
 		highlightCurrentRow();
 		getLegend(questions[curIndex].qid)
+		ap.setTitle(questions[curIndex].question)
 		ap.gotoQuestion(questions[curIndex].qid);
 
 		if (zoom == undefined) {
@@ -382,6 +388,45 @@ define([
 		$( "#maptitle" ).css({"width": titleWidth + "px"});
 		
 	};
+
+	setlocation = function(position) {	
+		xlng = position.coords.longitude;
+		ylat = position.coords.latitude;
+
+		curlatlon = "Point("+ xlng + " " + ylat +")";
+		console.log(curlatlon)
+		$.getJSON( "http://nominatim.openstreetmap.org/reverse?format=json&lat=" + ylat + "&lon=" + xlng + "&zoom=18&addressdetails=1", function( data ) { 	 	    
+			$("#answerLocation").html( "<small>Lat: " + ylat.toFixed(3) + " " + "Lon: " + xlng.toFixed(3) + "<br>" + "<br>Which is near:<br>" + data.display_name  + "</small>");
+			$("#answerLocation").html( "<small>Lat: " + ylat.toFixed(3) + " " + "Lon: " + xlng.toFixed(3) + "<br>" + "<br>Which is near:<br>" + data.display_name  + "</small>");				
+		})
+
+		locationMap = L.map('locMap', {trackResize:true, maxZoom:18}).setView([ylat, xlng], 15);
+
+		var locationLayer = L.tileLayer(
+			'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {			
+			maxZoom: 18,
+		})
+
+		locationMap.addLayer(locationLayer);		
+	};
+
+	showError = function(error) {
+		console.log(error)
+	    switch(error.code) {
+	        case error.PERMISSION_DENIED:	        	
+	            alert("You must enable your location settings to use your current location.")	        
+	            break;
+	        case error.POSITION_UNAVAILABLE:	        	
+	            alert("Location information is unavailable.")	        	          	
+	            break;
+	        case error.TIMEOUT:	           
+	            alert("The request to get user location timed out.")	        	
+	            break;
+	        case error.UNKNOWN_ERROR:	            
+	            alert("An unknown error occurred.")	        	
+	            break;
+	    }
+	};	
 
 	$.fn.autoSizr = function () {
 	  var el, elements, _i, _len, _results;
