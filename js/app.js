@@ -139,14 +139,13 @@ define([
 
 	$("#nextQuestion").bind('click', function(){		
 		app.curIndex += 1
-		console.log(app.curIndex)
 		if(app.curIndex == 10){
 			pbut = $($(".next a")[0]);
 			pbut.trigger("click");
 			return
 		}
 		else{
-			gotoquestion(app.questions[curIndex])
+			gotoquestion(app.questions[app.curIndex])
 		}		
 		disableButtons();
 	});
@@ -181,7 +180,7 @@ define([
 			return
 		}
 		else{
-			gotoquestion(app.questions[curIndex])
+			gotoquestion(app.questions[app.curIndex])
 		}	
 		
 		disableButtons();
@@ -199,7 +198,7 @@ define([
 			mapAdded = true;						
 		}
 		else{			
-			changeQuestion(app.questions[curIndex].qid);
+			changeQuestion(app.questions[app.curIndex].qid);
 		}	
 		$("#maptitle").html( '<center>' + row.question + '</center>' );
 		$("#maptitle").css('font-size', "30px");
@@ -208,8 +207,7 @@ define([
 		disableButtons();
 		
 		highlightCurrentRow();
-		getLegend(app.questions[app.curIndex].qid)
-		ap.setTitle(app.questions[app.curIndex].question)
+		getLegend(app.questions[app.curIndex].qid);
 		ap.gotoQuestion(app.questions[app.curIndex].qid);
 
 		if (zoom == undefined) {
@@ -399,14 +397,14 @@ define([
 			$("#answerLocation").html( "<small>Lat: " + ylat.toFixed(3) + " " + "Lon: " + xlng.toFixed(3) + "<br>" + "<br>Which is near:<br>" + data.display_name  + "</small>");				
 		})
 
-		locationMap = L.map('locMap', {trackResize:true, maxZoom:18}).setView([ylat, xlng], 15);
+		//locationMap = L.map('locMap', {trackResize:true, maxZoom:18}).setView([ylat, xlng], 15);
 
-		var locationLayer = L.tileLayer(
-			'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {			
-			maxZoom: 18,
-		})
+		//var locationLayer = L.tileLayer(
+		//	'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {			
+		//	maxZoom: 18,
+		//})
 
-		locationMap.addLayer(locationLayer);		
+		//locationMap.addLayer(locationLayer);		
 	};
 
 	showError = function(error) {

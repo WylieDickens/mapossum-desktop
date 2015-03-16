@@ -7,80 +7,48 @@ define(function () {
             throw new TypeError("answerPanel constructor cannot be called as a function.");
         }
         
+		this.app = app;
 		this.div = $("#" + id);
 		this.div.empty();
-		this.mainDiv = $('<div class="answerMain"></div>');
+		this.mainDiv = $('<div class="row"></div>');
 		this.div.append(this.mainDiv);
-		this.submit = $(' <button type="submit" class="btn btn-default" id="subAnswer">Submit</button>')
-		this.locationMap = $('<div id="locMap"></div>');
-		this.locationDiv = $('<div id="answerLocation"><b>You are located at or near:</b></div>');
-		this.div.append(this.submit)
-		this.div.append(this.locationDiv);
-		this.div.append(this.locationMap);
 		
-		$("#subAnswer").bind('click', function(){
-			console.log(app.curlatlon)			
-			this.pushAnswer(app.questions[curIndex].qid, $('input[name=ansRadio]:checked').val(), app.curlatlon )
+		this.answerDiv = $('<div class="answerMain col-md-8"></div>');
+		this.mainDiv.append(this.answerDiv);
+		
+		this.answerSpace = $('<div></div>');
+		this.answerDiv.append(this.answerSpace)
+		
+		this.submit = $(' <button type="submit" class="btn btn-default" id="subAnswer">Submit</button>')
+		this.answerDiv.append(this.submit)
+		
+		this.locationDiv = $('<div id="answerLocation" class="col-md-4"><b>You are located at or near:</b></div>');
+		this.mainDiv.append(this.locationDiv);
+		//this.div.append(this.locationMap);
+		
+		$(this.submit).bind('click', function(){		
+			answerPanel.pushAnswer(app, $('input[name=ansRadio]:checked').val() )
 		});
 		
     }
  
 	answerPanel.makeRadio = function(answer) {			
-		radioDiv = $('<input type="radio" name="ansRadio" id="answerRadio" value="'+answer.answerid+'"/>' + answer.answer + '<br>');
+		radioDiv = $('<input type="radio" name="ansRadio" class="answerRadio" value="'+answer.answerid+'"/>' + answer.answer + '<br>');
 		return radioDiv
 	}
-
-	answerPanel.makeTitle = function(question) {		
-		titleDiv = $('<b><h4>' + question + '</h4></b>');
-		return titleDiv
-	}
 	
+	answerPanel.pushAnswer = function(app, answerid){
 
-
-	// answerPanel.curLocation = function(location){
-	// 	return location
-	// }
-
-	// answerPanel.setlocation = function(position) {	
-	// 	xlng = position.coords.longitude;
-	// 	ylat = position.coords.latitude;
-
-	// 	curlatlon = "Point("+ xlng + " " + ylat +")";
-	// 	console.log(curlatlon)
-	// 	$.getJSON( "http://nominatim.openstreetmap.org/reverse?format=json&lat=" + ylat + "&lon=" + xlng + "&zoom=18&addressdetails=1", function( data ) { 	 	    
-	// 		$("#answerLocation").html( "<small>Lat: " + ylat.toFixed(3) + " " + "Lon: " + xlng.toFixed(3) + "<br>" + "<br>Which is near:<br>" + data.display_name  + "</small>");
-	// 		$("#answerLocation").html( "<small>Lat: " + ylat.toFixed(3) + " " + "Lon: " + xlng.toFixed(3) + "<br>" + "<br>Which is near:<br>" + data.display_name  + "</small>");				
-	// 	})
-
-	// 	locationMap = L.map('locMap', {trackResize:true, maxZoom:18}).setView([ylat, xlng], 15);
-
-	// 	var locationLayer = L.tileLayer(
-	// 		'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {			
-	// 		maxZoom: 18,
-	// 	})
-
-	// 	locationMap.addLayer(locationLayer);
-	// 	return curlatlon
-	// }
-
-	// function showError(error) {
-	// 	console.log(error)
-	//     switch(error.code) {
-	//         case error.PERMISSION_DENIED:	        	
-	//             alert("You must enable your location settings to use your current location.")	        
-	//             break;
-	//         case error.POSITION_UNAVAILABLE:	        	
-	//             alert("Location information is unavailable.")	        	          	
-	//             break;
-	//         case error.TIMEOUT:	           
-	//             alert("The request to get user location timed out.")	        	
-	//             break;
-	//         case error.UNKNOWN_ERROR:	            
-	//             alert("An unknown error occurred.")	        	
-	//             break;
-	//     }
-	// }	
-	
+			loc = app.curlatlon;
+			qid = app.questions[app.curIndex].qid;
+		
+			$.getJSON( "http://services.mapossum.org/addresponse?qid=" + qid + "&answerid=" + answerid + "&location=" + loc + "&callback=?", function( data ) {  
+				  d = new Date();
+				  v = d.getTime();    	
+			      app.mapossumLayer.options.v = v;
+				  app.mapossumLayer.redraw();
+			    });
+		}
  
     answerPanel.prototype = {
 
@@ -88,12 +56,16 @@ define(function () {
      
 		gotoQuestion: function(qid) {
 
-			apdiv = this.mainDiv;
+			apdiv = this.answerSpace;
+			apdiv.empty();
 			
-			x = 0;
+			console.log(this.app.questions[this.app.curIndex].explain)
+			titleDiv = $('<h4 class="answerTitle">' + this.app.questions[this.app.curIndex].question + '</h4>');
+			apdiv.append(titleDiv);
 			
-			//print title
-
+			explainDiv = $('<h5 class="explainText">' + this.app.questions[this.app.curIndex].explain + '</h5>');
+			apdiv.append(explainDiv);
+			
 			$.getJSON("http://services.mapossum.org/getanswers?qid=" + qid + "&callback=?", function(data) {
 				$.each(data.data, function( index, value ) {
 					if(value.answer != null){
@@ -103,26 +75,7 @@ define(function () {
 			
 			});			
 			
-		},
-
-		setTitle: function(question){
-
-			this.mainDiv.empty();
-			qpdiv = this.mainDiv		
-			qpdiv.append(answerPanel.makeTitle(question));
-		},
-
-		pushAnswer: function(qid, answerid, loc){
-			
-			$.getJSON( "http://services.mapossum.org/addresponse?qid=" + qid + "&answerid=" + answerid + "&location=" + loc + "&callback=?", function( data ) {  
-				  d = new Date();
-				  v = d.getTime();    	
-			      app.mapossumLayer.options.v = v;
-				  app.mapossumLayer.redraw();
-			    });
-		},
-
-
+		}
 
     };
 
