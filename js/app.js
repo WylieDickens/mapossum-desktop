@@ -30,10 +30,12 @@ define([
 		) {
 	
   	console.log("loaded");
-
-	var MAP, questions, questionsGrid, loggedIn = 0, clicked, userAcc=[], mapType = "subs", curIndex, mapossumLayer, mapAdded = false, maptype = "subs", legendsize, curlatlon;
+	
+	var app = new Object();
+	app.MAP, app.questions, app.maptype = "subs", app.curIndex, app.mapossumLayer, app.curlatlon;
+	var questionsGrid, loggedIn = 0, clicked, userAcc=[],  mapAdded = false, legendsize;
     
-	var ap = new answerPanel("answerpanel");
+	var ap = new answerPanel("answerpanel", app);
 	
     setup = function() {
    	
@@ -41,7 +43,7 @@ define([
 
 		navigator.geolocation.getCurrentPosition(setlocation,showError);
 
-		MAP = L.map('mappanel', {trackResize:true, maxZoom:18}).setView([0,0], 2);
+		app.MAP = L.map('mappanel', {trackResize:true, maxZoom:18}).setView([0,0], 2);
 		
 		var bwlayer = L.tileLayer(
 					'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -49,12 +51,12 @@ define([
 					maxZoom: 18,
 					})
 		
-		MAP.addLayer(bwlayer);
+		app.MAP.addLayer(bwlayer);
 
 		$($('.maptypeDD')[0]).find("a").on('click', function (el) {
 			console.log(el.target)
-			maptype = $(el.target).data("maptype")
-			changemapType(maptype)
+			app.maptype = $(el.target).data("maptype")
+			changemapType(app.maptype)
 		})
   
 
@@ -85,9 +87,9 @@ define([
 				response.rows = response.data;
 				//response.total = 100; //total to be done on server
 				response.rowCount = response.rows.length;  //number of rows in output
-				questions = response.data;
-				console.log(questions)
-				curIndex = 0;			
+				app.questions = response.data;
+				console.log(app.questions)
+				app.curIndex = 0;			
 				return response;
 			},
 			url: "http://services.mapossum.org/getquestions",
@@ -102,14 +104,14 @@ define([
 			}
 		}).on("loaded.rs.jquery.bootgrid", function()
 				{						
-					gotoquestion(questions[curIndex]);
+					gotoquestion(app.questions[app.curIndex]);
 					/* Executes after data is loaded and rendered */
 					questionsGrid.find(".command-map").on("click", function(e)
 					{	
 						cqid = $(this).data("row-id")
-						$.each(questions, function( index, value ) {												
+						$.each(app.questions, function( index, value ) {												
 							if(value.qid == cqid){
-								curIndex = index
+								app.curIndex = index
 								gotoquestion(value)
 								transitionTo('mapbutton')
 								return
@@ -136,15 +138,15 @@ define([
 	});
 
 	$("#nextQuestion").bind('click', function(){		
-		curIndex += 1
-		console.log(curIndex)
-		if(curIndex == 10){
+		app.curIndex += 1
+		console.log(app.curIndex)
+		if(app.curIndex == 10){
 			pbut = $($(".next a")[0]);
 			pbut.trigger("click");
 			return
 		}
 		else{
-			gotoquestion(questions[curIndex])
+			gotoquestion(app.questions[curIndex])
 		}		
 		disableButtons();
 	});
@@ -157,13 +159,13 @@ define([
 	
 	disableButtons = function() {
 
-			if (isFinal("prev") && (curIndex == 0)) {
+			if (isFinal("prev") && (app.curIndex == 0)) {
 				$("#previousQuestion").css({"opacity": 0.08})
 			} else {
 				$("#previousQuestion").css({"opacity": 0.6})
 			}
-			console.log(curIndex, questions.length)
-			if (isFinal("next") && (curIndex == questions.length-1)) {
+			console.log(app.curIndex, app.questions.length)
+			if (isFinal("next") && (app.curIndex == app.questions.length-1)) {
 				$("#nextQuestion").css({"opacity": 0.08})
 			} else {
 				$("#nextQuestion").css({"opacity": 0.6})
@@ -172,35 +174,32 @@ define([
 	}
 
 	$("#previousQuestion").bind('click', function(){		
-		curIndex -= 1
-		console.log(curIndex)
-		if(curIndex == -1){		
+		app.curIndex -= 1
+		console.log(app.curIndex)
+		if(app.curIndex == -1){		
 			$($(".prev a")[0]).trigger("click");
 			return
 		}
 		else{
-			gotoquestion(questions[curIndex])
+			gotoquestion(app.questions[curIndex])
 		}	
 		
 		disableButtons();
 	});
 
-	$("#subAnswer").bind('click', function(){
-		console.log(curlatlon)			
-		ap.pushAnswer(questions[curIndex].qid, $('input[name=ansRadio]:checked').val(), curlatlon )
-	});
+
 
 
 	gotoquestion = function(row, zoom){
 		if(mapAdded == false){						
 			d = new Date();
-			iv = d.getTime();		 
-			mapossumLayer = L.tileLayer('http://maps.mapossum.org/{qid}/{maptype}/{z}/{x}/{y}.png?v={v}', {maptype: maptype, qid:questions[curIndex].qid, v: iv, opacity: 0.7})
-			mapossumLayer.addTo(MAP);
+			iv = d.getTime();		
+			app.mapossumLayer = L.tileLayer('http://maps.mapossum.org/{qid}/{maptype}/{z}/{x}/{y}.png?v={v}', {maptype: app.maptype, qid:app.questions[app.curIndex].qid, v: iv, opacity: 0.7})
+			app.mapossumLayer.addTo(app.MAP);
 			mapAdded = true;						
 		}
 		else{			
-			changeQuestion(questions[curIndex].qid);
+			changeQuestion(app.questions[curIndex].qid);
 		}	
 		$("#maptitle").html( '<center>' + row.question + '</center>' );
 		$("#maptitle").css('font-size', "30px");
@@ -209,18 +208,18 @@ define([
 		disableButtons();
 		
 		highlightCurrentRow();
-		getLegend(questions[curIndex].qid)
-		ap.setTitle(questions[curIndex].question)
-		ap.gotoQuestion(questions[curIndex].qid);
+		getLegend(app.questions[app.curIndex].qid)
+		ap.setTitle(app.questions[app.curIndex].question)
+		ap.gotoQuestion(app.questions[app.curIndex].qid);
 
 		if (zoom == undefined) {
-			getExtent(questions[curIndex].qid)
+			getExtent(app.questions[app.curIndex].qid)
 		} 	
 		
 	}
 
 	getExtent = function(qid){	
-		$.getJSON( "http://services.mapossum.org/getextent/"+ qid + "/" + maptype + "?callback=?", function( data ) {      	
+		$.getJSON( "http://services.mapossum.org/getextent/"+ qid + "/" + app.maptype + "?callback=?", function( data ) {      	
 	 		minExtent = data[0]; 		
 	 		maxExtent = data[1];
 	 		bounds = [minExtent, maxExtent];  			
@@ -229,19 +228,19 @@ define([
 	}
 
 	fitBounds = function(bounds){	
-		MAP.fitBounds(bounds, {padding:0});
+		app.MAP.fitBounds(bounds, {padding:0});
 	}
 
 	changemapType = function(newMapType) {
-		maptype = newMapType
-	 	mapossumLayer.options.maptype = newMapType
-	 	mapossumLayer.redraw();
+		app.maptype = newMapType
+	 	app.mapossumLayer.options.maptype = newMapType
+	 	app.mapossumLayer.redraw();
 	 	//updateHash();
 	}
 
 	changeQuestion = function(qid) {	    
-		mapossumLayer.options.qid = qid
-		mapossumLayer.redraw();
+		app.mapossumLayer.options.qid = qid
+		app.mapossumLayer.redraw();
 		//updateHash();
 	}
 
@@ -262,7 +261,7 @@ define([
 		});
 		
 		
-		cgridrow = questionsGrid.find('[data-row-id=' + curIndex + ']')[0]
+		cgridrow = questionsGrid.find('[data-row-id=' + app.curIndex + ']')[0]
 		console.log(cgridrow);
 		$(cgridrow).css({"background": "#ADCAE2"})
 		
@@ -378,8 +377,8 @@ define([
 		titleWidth = mapwidth - $( "#nextQuestion" ).width() - $( "#previousQuestion" ).width() - 20;  // this last number has to be total of the margins and padding for each element in the footing area is.
 		legendsize = mapwidth/8
 		
-		if(questions != undefined){
-			getLegend(questions[curIndex].qid)
+		if(app.questions != undefined){
+			getLegend(app.questions[app.curIndex].qid)
 		}
 
 		$( "#mainpanel" ).css({"width": mapwidth + "px"});
@@ -393,8 +392,8 @@ define([
 		xlng = position.coords.longitude;
 		ylat = position.coords.latitude;
 
-		curlatlon = "Point("+ xlng + " " + ylat +")";
-		console.log(curlatlon)
+		app.curlatlon = "Point("+ xlng + " " + ylat +")";
+		console.log(app.curlatlon)
 		$.getJSON( "http://nominatim.openstreetmap.org/reverse?format=json&lat=" + ylat + "&lon=" + xlng + "&zoom=18&addressdetails=1", function( data ) { 	 	    
 			$("#answerLocation").html( "<small>Lat: " + ylat.toFixed(3) + " " + "Lon: " + xlng.toFixed(3) + "<br>" + "<br>Which is near:<br>" + data.display_name  + "</small>");
 			$("#answerLocation").html( "<small>Lat: " + ylat.toFixed(3) + " " + "Lon: " + xlng.toFixed(3) + "<br>" + "<br>Which is near:<br>" + data.display_name  + "</small>");				

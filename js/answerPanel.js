@@ -1,7 +1,7 @@
 
 define(function () {
 	
-    function answerPanel(id) {
+    function answerPanel(id, app) {
     	
         if (!(this instanceof answerPanel)) {
             throw new TypeError("answerPanel constructor cannot be called as a function.");
@@ -18,6 +18,11 @@ define(function () {
 		this.div.append(this.locationDiv);
 		this.div.append(this.locationMap);
 		
+		$("#subAnswer").bind('click', function(){
+			console.log(app.curlatlon)			
+			this.pushAnswer(app.questions[curIndex].qid, $('input[name=ansRadio]:checked').val(), app.curlatlon )
+		});
+		
     }
  
 	answerPanel.makeRadio = function(answer) {			
@@ -29,6 +34,7 @@ define(function () {
 		titleDiv = $('<b><h4>' + question + '</h4></b>');
 		return titleDiv
 	}
+	
 
 
 	// answerPanel.curLocation = function(location){
@@ -85,6 +91,8 @@ define(function () {
 			apdiv = this.mainDiv;
 			
 			x = 0;
+			
+			//print title
 
 			$.getJSON("http://services.mapossum.org/getanswers?qid=" + qid + "&callback=?", function(data) {
 				$.each(data.data, function( index, value ) {
@@ -109,8 +117,8 @@ define(function () {
 			$.getJSON( "http://services.mapossum.org/addresponse?qid=" + qid + "&answerid=" + answerid + "&location=" + loc + "&callback=?", function( data ) {  
 				  d = new Date();
 				  v = d.getTime();    	
-			      mapossumLayer.options.v = v;
-				  mapossumLayer.redraw();
+			      app.mapossumLayer.options.v = v;
+				  app.mapossumLayer.redraw();
 			    });
 		},
 
