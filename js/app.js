@@ -19,14 +19,16 @@ define([
 		'leaflet', 
 		'bootstrap',
 		"bootstrapGrid",
-		"answerPanel"
+		"answerPanel",
+		"locationPanel"
 		], 
 		function(
 		$, 
 		L, 
 		bs,
 		bg,
-		answerPanel
+		answerPanel,
+		locationPanel
 		) {
 	
   	console.log("loaded");
@@ -36,7 +38,8 @@ define([
 	var questionsGrid, loggedIn = 0, clicked, userAcc=[],  mapAdded = false, legendsize;
     
 	var ap = new answerPanel("answerpanel", app);
-	
+	var lp = new locationPanel("locationPanel", app);
+
     setup = function() {
    	
 		doLayout();
@@ -393,8 +396,7 @@ define([
 		app.curlatlon = "Point("+ xlng + " " + ylat +")";
 		console.log(app.curlatlon)
 		$.getJSON( "http://nominatim.openstreetmap.org/reverse?format=json&lat=" + ylat + "&lon=" + xlng + "&zoom=18&addressdetails=1", function( data ) { 	 	    
-			$("#answerLocation").html( "<small>Lat: " + ylat.toFixed(3) + " " + "Lon: " + xlng.toFixed(3) + "<br>" + "<br>Which is near:<br>" + data.display_name  + "</small>");
-			$("#answerLocation").html( "<small>Lat: " + ylat.toFixed(3) + " " + "Lon: " + xlng.toFixed(3) + "<br>" + "<br>Which is near:<br>" + data.display_name  + "</small>");				
+			$("#answerLocation").html( "<h5>Your answer location will be registered at or near:</h5><h6>" + data.display_name + "</h6>" );							
 		})
 
 		//locationMap = L.map('locMap', {trackResize:true, maxZoom:18}).setView([ylat, xlng], 15);

@@ -22,8 +22,11 @@ define(function () {
 		this.submit = $(' <button type="submit" class="btn btn-default" id="subAnswer">Submit</button>')
 		this.answerDiv.append(this.submit)
 		
-		this.locationDiv = $('<div id="answerLocation" class="col-md-4"><b>You are located at or near:</b></div>');
+		this.locationDiv = $('<div id="answerLocation" class="col-md-4"><h4>You current answer location will be located at or near:<h4></div>');
 		this.mainDiv.append(this.locationDiv);
+
+		this.changeLocation = $(' <div class="buttonLoc"><button type="submit" class="btn btn-default" id="updateLoc">Update Your Submission Location</button></div>')
+		this.mainDiv.append(this.changeLocation)
 		//this.div.append(this.locationMap);
 		
 		$(this.submit).bind('click', function(){		
@@ -58,8 +61,7 @@ define(function () {
 
 			apdiv = this.answerSpace;
 			apdiv.empty();
-			
-			console.log(this.app.questions[this.app.curIndex].explain)
+
 			titleDiv = $('<h4 class="answerTitle">' + this.app.questions[this.app.curIndex].question + '</h4>');
 			apdiv.append(titleDiv);
 			

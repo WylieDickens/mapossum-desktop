@@ -18,3 +18,15 @@
 .answerRadio {
 	margin: 3px !important;
 }
+#answerLocation h5{
+	font-weight: bold;
+}
+.buttonLoc{
+	text-align: center;
+}
+.answerMain{
+	border-style:solid;
+	border-width:0px;
+	border-right-width:5px;
+	border-right-color:black;
+}
