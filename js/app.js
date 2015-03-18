@@ -20,14 +20,21 @@ define([
 		'bootstrap',
 		"bootstrapGrid",
 		"answerPanel",
-		"locationPanel"
+		"loginModel",
+		"createQuestionPanel",
+		"moCharts",
+		"userPanel"
 		], 
 		function(
 		$, 
 		L, 
 		bs,
 		bg,
-		answerPanel
+		answerPanel,
+		loginModel,
+		createQuestionPanel,
+		moCharts,
+		userPanel
 		) {
 	
   	console.log("loaded");
