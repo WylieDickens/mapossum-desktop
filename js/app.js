@@ -295,7 +295,7 @@ define([
 				$( el ).animate({
 					opacity: 0,
 				}, 400, function() {
-					$(el).hide();
+					$(el).css("z-index", -1)
 				});
 			
 			
@@ -325,7 +325,7 @@ define([
 		});
 
 		$( panel ).css({"opacity": 0});
-		$( panel ).show();
+		$( panel ).css("z-index", 400)
 		
 		$( panel ).animate({
 			opacity: 1,
