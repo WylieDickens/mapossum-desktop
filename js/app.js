@@ -27,8 +27,7 @@ define([
 		L, 
 		bs,
 		bg,
-		answerPanel,
-		locationPanel
+		answerPanel
 		) {
 	
   	console.log("loaded");
@@ -38,13 +37,10 @@ define([
 	var questionsGrid, loggedIn = 0, clicked, userAcc=[],  mapAdded = false, legendsize;
     
 	var ap = new answerPanel("answerpanel", app);
-	var lp = new locationPanel("locationPanel", app);
 
     setup = function() {
    	
 		doLayout();
-
-		navigator.geolocation.getCurrentPosition(setlocation,showError);
 
 		app.MAP = L.map('mappanel', {trackResize:true, maxZoom:18}).setView([0,0], 2);
 		
@@ -271,7 +267,7 @@ define([
 	
 	/* function to change divs */
 	transitionTo = function(buttonClicked) {
-		if((buttonClicked == "userbutton" || buttonClicked == "addbutton") && loggedIn == 0){
+		if((buttonClicked == "userbutton" || buttonClicked == "addbutton") && app.loggedIn == 0){
 			clicked = buttonClicked;
 			$('#loginModal').modal('show')
 			return
@@ -388,44 +384,6 @@ define([
 		$( "#maptitle" ).css({"width": titleWidth + "px"});
 		
 	};
-
-	setlocation = function(position) {	
-		xlng = position.coords.longitude;
-		ylat = position.coords.latitude;
-
-		app.curlatlon = "Point("+ xlng + " " + ylat +")";
-		console.log(app.curlatlon)
-		$.getJSON( "http://nominatim.openstreetmap.org/reverse?format=json&lat=" + ylat + "&lon=" + xlng + "&zoom=18&addressdetails=1", function( data ) { 	 	    
-			$("#answerLocation").html( "<h5>Your answer location will be registered at or near:</h5><h6>" + data.display_name + "</h6>" );							
-		})
-
-		//locationMap = L.map('locMap', {trackResize:true, maxZoom:18}).setView([ylat, xlng], 15);
-
-		//var locationLayer = L.tileLayer(
-		//	'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {			
-		//	maxZoom: 18,
-		//})
-
-		//locationMap.addLayer(locationLayer);		
-	};
-
-	showError = function(error) {
-		console.log(error)
-	    switch(error.code) {
-	        case error.PERMISSION_DENIED:	        	
-	            alert("You must enable your location settings to use your current location.")	        
-	            break;
-	        case error.POSITION_UNAVAILABLE:	        	
-	            alert("Location information is unavailable.")	        	          	
-	            break;
-	        case error.TIMEOUT:	           
-	            alert("The request to get user location timed out.")	        	
-	            break;
-	        case error.UNKNOWN_ERROR:	            
-	            alert("An unknown error occurred.")	        	
-	            break;
-	    }
-	};	
 
 	$.fn.autoSizr = function () {
 	  var el, elements, _i, _len, _results;

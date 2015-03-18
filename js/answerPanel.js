@@ -1,12 +1,17 @@
 
-define(function () {
+define([
+		"locationPanel"
+		], 
+		function(
+		locationPanel
+		) {
 	
     function answerPanel(id, app) {
     	
         if (!(this instanceof answerPanel)) {
             throw new TypeError("answerPanel constructor cannot be called as a function.");
         }
-        
+		console.log(app);
 		this.app = app;
 		this.div = $("#" + id);
 		this.div.empty();
@@ -22,16 +27,17 @@ define(function () {
 		this.submit = $(' <button type="submit" class="btn btn-default" id="subAnswer">Submit</button>')
 		this.answerDiv.append(this.submit)
 		
-		this.locationDiv = $('<div id="answerLocation" class="col-md-4"><h4>You current answer location will be located at or near:<h4></div>');
+		this.locationDiv = $('<div id="answerLocation" class="col-md-4"></div>');
 		this.mainDiv.append(this.locationDiv);
 
-		this.changeLocation = $(' <div class="buttonLoc"><button type="submit" class="btn btn-default" id="updateLoc">Update Your Submission Location</button></div>')
-		this.mainDiv.append(this.changeLocation)
+
 		//this.div.append(this.locationMap);
 		
 		$(this.submit).bind('click', function(){		
 			answerPanel.pushAnswer(app, $('input[name=ansRadio]:checked').val() )
 		});
+		
+		var lp = new locationPanel(this.locationDiv, app);
 		
     }
  
