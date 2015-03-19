@@ -66,6 +66,10 @@ p {
 	z-index: 0;   */
 }
 
+#infopanel{
+	padding: 10px;
+}
+
 .maptypeDD{
 	font-family: "Trebuchet MS", Helvetica, sans-serif;	
 	position:absolute;
