@@ -1,5 +1,6 @@
 
-define([
+define("answerPanel",
+		[
 		"locationPanel"
 		], 
 		function(

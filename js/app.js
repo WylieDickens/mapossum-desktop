@@ -44,6 +44,10 @@ define([
 	var questionsGrid, loggedIn = 0, clicked, userAcc=[],  mapAdded = false, legendsize;
     
 	var ap = new answerPanel("answerpanel", app);
+	
+	var cqp = new createQuestionPanel("addpanel", app); 
+	
+	cqp.submitQuestion();
 
     setup = function() {
    	

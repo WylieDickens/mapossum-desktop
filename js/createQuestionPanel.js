@@ -1,5 +1,7 @@
 
-define(function () {
+//define("createQuestionPanel", ["text!some/module.html"], function (html) {
+
+define("createQuestionPanel", function () {
 	
     function createQuestionPanel(div, app) {
   
@@ -7,7 +9,7 @@ define(function () {
             throw new TypeError("createQuestionPanel constructor cannot be called as a function.");
         }
 
-		this.div = $(div);
+		this.div = $("#" + div);
 
 		
     }
@@ -17,7 +19,13 @@ define(function () {
  
     createQuestionPanel.prototype = {
 
-    	constructor: createQuestionPanel
+    	constructor: createQuestionPanel,
+		
+		submitQuestion: function() {
+		
+			console.log(this.div);
+		
+		}
      
 		
     };
