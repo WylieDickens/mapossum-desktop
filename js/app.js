@@ -36,9 +36,9 @@ define([
 		moCharts,
 		userPanel
 		) {
-	
+		
   	console.log("loaded");
-	
+
 	var app = new Object();
 	app.MAP, app.questions, app.maptype = "subs", app.curIndex, app.mapossumLayer, app.curlatlon;
 	var questionsGrid, loggedIn = 0, clicked, userAcc=[],  mapAdded = false, legendsize;
@@ -46,8 +46,6 @@ define([
 	var ap = new answerPanel("answerpanel", app);
 	
 	var cqp = new createQuestionPanel("addpanel", app); 
-	
-	cqp.submitQuestion();
 
     setup = function() {
    	

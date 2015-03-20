@@ -1,0 +1,21 @@
+.createQuestionPanel {
+
+padding: 10px;
+overflow-y: auto;
+overflow-x: hidden;
+height: 100%;
+
+}
+
+.formLabel {
+margin-bottom: 5px !important;
+margin-top: 5px !important;
+}
+
+.formItem {
+  margin-bottom: 10px !important;
+}
+
+#addanswerline{
+float:right;
+}
