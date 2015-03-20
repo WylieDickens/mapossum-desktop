@@ -3,14 +3,19 @@ requirejs.config({
     baseUrl: "js",
 	shim : {
         "bootstrap" : { "deps" :['jquery'] },
-		"bootstrapGrid" : { "deps" :['jquery'] }
+		"bootstrapGrid" : { "deps" :['jquery'] },
+		"tinycolor": { "deps" :['jquery'] },
+		"pac": { "deps" :['jquery', "bootstrap", "tinycolor"] } 
     },
     paths: { 
         /* Load jquery from google cdn. On fail, load local file. */
         'jquery': ['//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min', 'libs/jquery-min'],
         'leaflet': '//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.2/leaflet' ,
 		"bootstrap" :  "//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min",
-		"bootstrapGrid" :  "//cdnjs.cloudflare.com/ajax/libs/jquery-bootgrid/1.1.4/jquery.bootgrid"	
+		"bootstrapGrid" :  "//cdnjs.cloudflare.com/ajax/libs/jquery-bootgrid/1.1.4/jquery.bootgrid",
+		"pac": "pick-a-color-1.2.3.min",
+		"tinycolor": "tinycolor"
+		
     }
 });
 
@@ -19,6 +24,8 @@ define([
 		'leaflet', 
 		'bootstrap',
 		"bootstrapGrid",
+		"tinycolor",
+		"pac",
 		"answerPanel",
 		"loginModel",
 		"createQuestionPanel",
@@ -30,6 +37,8 @@ define([
 		L, 
 		bs,
 		bg,
+		tc,
+		pac,
 		answerPanel,
 		loginModel,
 		createQuestionPanel,
@@ -37,7 +46,7 @@ define([
 		userPanel
 		) {
 		
-  	console.log("loaded");
+  	console.log(pac);
 
 	var app = new Object();
 	app.MAP, app.questions, app.maptype = "subs", app.curIndex, app.mapossumLayer, app.curlatlon;
@@ -420,6 +429,7 @@ define([
 	  }
 	  return $(this); 
 	};	
+	
 
 	/* login click event */
 	$("#verify").bind('click', function(e) {

@@ -16,6 +16,36 @@ margin-top: 5px !important;
   margin-bottom: 10px !important;
 }
 
-#addanswerline{
+.fl{
 float:right;
+}
+
+.redinvalid {
+ background:#fee;
+ border-color:#f00;
+ font-weight:bold;
+}
+
+.redinvalid::-webkit-input-placeholder {
+   color: #a00 !important;
+}
+
+.redinvalid:-moz-placeholder { /* Firefox 18- */
+   color: #a00 !important;  
+}
+
+.redinvalid::-moz-placeholder {  /* Firefox 19+ */
+   color: #a00 !important;  
+}
+
+.redinvalid :-ms-input-placeholder {  
+   color: #a00 !important;  
+}
+
+.answerArea {
+	width:100%;
+}
+
+.answer tr {
+	padding: 25px;
 }
