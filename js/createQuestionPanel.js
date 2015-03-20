@@ -1,7 +1,13 @@
 
-//define("createQuestionPanel", ["text!some/module.html"], function (html) {
+define("createQuestionPanel", 
+	[
+		"text!test.html",
+	//	"text!thing/test.css"
+	], function (
+		html
+	) {
 
-define("createQuestionPanel", function () {
+//define("createQuestionPanel", function () {
 	
     function createQuestionPanel(div, app) {
   
@@ -11,6 +17,7 @@ define("createQuestionPanel", function () {
 
 		this.div = $("#" + div);
 
+		console.log(html);
 		
     }
  
