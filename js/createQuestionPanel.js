@@ -19,6 +19,8 @@ define("createQuestionPanel",
         if (!(this instanceof createQuestionPanel)) {
             throw new TypeError("createQuestionPanel constructor cannot be called as a function.");
         }
+		
+		this.defaultColors = ["00f", "008000","FF0000","FFFF00","800080", "FF8C00", "00FF00", "00FFFF", "FF00FF", "800000", "000080", "A0522D", "FF1493", "808000", "008080", "00FF7F", "DAA520", "7FFFD4", "FF7F50", "483D8B", "FFA07A", "AFEEEE", "FFE4C4"]
 
 		this.div = $("#" + div);
 		this.div.empty();
@@ -48,10 +50,9 @@ define("createQuestionPanel",
 		this.questionText = this.div.find('[data-api="question"]');
 		this.questionText.bind("click",$.proxy( function() {this.removeClass( "redinvalid" )}, this.questionText ) )
 		
+		
     }
  
-
-
  
     createQuestionPanel.prototype = {
 
@@ -59,7 +60,15 @@ define("createQuestionPanel",
 		
 		addAnswer: function() {
 			//console.log(this.div);
-			answernow = $(singleAnswerText);
+			
+			acount = (this.div.find(".answer").length)
+			
+			useColor = (acount) % (this.defaultColors.length)
+			
+			//alert('value="' + this.defaultColors[useColor] + '"')
+			
+			outText = singleAnswerText.replace('value="000"', 'value="' + this.defaultColors[useColor] + '"');
+			answernow = $(outText);
 			answernow.papa = this;
 			abutton = answernow.find("button");
 
@@ -86,6 +95,8 @@ define("createQuestionPanel",
 					});
 			
 			this.answerArea.append(answernow);
+			
+			$('[data-toggle="tooltip"]').tooltip();
 			
 		},
 		
