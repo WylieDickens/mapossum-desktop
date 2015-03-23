@@ -11,8 +11,7 @@ define("answerPanel",
     	
         if (!(this instanceof answerPanel)) {
             throw new TypeError("answerPanel constructor cannot be called as a function.");
-        }
-		console.log(app);
+        }		
 		this.app = app;
 		this.div = $("#" + id);
 		this.div.empty();
@@ -31,11 +30,8 @@ define("answerPanel",
 		this.locationDiv = $('<div id="answerLocation" class="col-md-4"></div>');
 		this.mainDiv.append(this.locationDiv);
 
-
-		//this.div.append(this.locationMap);
 		
-		$(this.submit).bind('click', function(){
-			console.log('cliced')		
+		$(this.submit).bind('click', function(){			
 			answerPanel.pushAnswer(app, $('input[name=ansRadio]:checked').val() )
 		});
 		
@@ -48,13 +44,11 @@ define("answerPanel",
 		return radioDiv
 	}
 	
-	answerPanel.pushAnswer = function(app, answerid){
-			console.log('location!~')
-			console.log(app.curlatlon)
+	answerPanel.pushAnswer = function(app, answerid){		
 			loc = app.curlatlon;
 			qid = app.questions[app.curIndex].qid;
 
-			$.getJSON( "http://services.mapossum.org/addresponse?qid=" + qid + "&answerid=" + answerid + "&location=" + loc + "&callback=?", function( data ) {  
+			$.getJSON( "http://services.mapossum.org/addresponse?qid=" + qid + "&answerid=" + answerid + "&location=Point(" + loc[0] + " " + loc[1] + ")&callback=?", function( data ) {  
 				  d = new Date();
 				  v = d.getTime();    	
 			      app.mapossumLayer.options.v = v;
