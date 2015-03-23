@@ -49,7 +49,7 @@ define([
   	console.log(pac);
 
 	var app = new Object();
-	app.MAP, app.questions, app.maptype = "subs", app.curIndex, app.mapossumLayer, app.curlatlon;
+	app.MAP, app.questions, app.maptype = "subs", app.curIndex, app.mapossumLayer, app.curlatlon, app.bh = [];
 	var questionsGrid, loggedIn = 0, clicked, userAcc=[],  mapAdded = false, legendsize;
     
 	var ap = new answerPanel("answerpanel", app);
@@ -75,6 +75,10 @@ define([
 			app.maptype = $(el.target).data("maptype")
 			changemapType(app.maptype)
 		})
+
+		app.MAP.on('move', function(e) {
+		    buildHash();
+		});
   
 
 		$(".controlbutton").click(function(e){
@@ -268,6 +272,20 @@ define([
 		legendImage.appendTo('#maplegend').trigger( "create" )
 	}
 
+	buildHash = function() {
+		try {
+			app.bh = [];			
+			c = app.MAP.getCenter();
+			app.bh.push(app.questions[app.curIndex].qid);
+			app.bh.push(app.maptype);
+			app.bh.push(app.MAP.getZoom())
+			app.bh.push(c.lat);
+			app.bh.push(c.lng);
+			window.location.hash = app.bh.join("|")
+		} catch(e) {
+			console.log('hash not set');
+		}
+	}
 	
 	highlightCurrentRow = function() {
 		
