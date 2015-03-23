@@ -34,7 +34,8 @@ define("answerPanel",
 
 		//this.div.append(this.locationMap);
 		
-		$(this.submit).bind('click', function(){		
+		$(this.submit).bind('click', function(){
+			console.log('cliced')		
 			answerPanel.pushAnswer(app, $('input[name=ansRadio]:checked').val() )
 		});
 		
@@ -48,10 +49,11 @@ define("answerPanel",
 	}
 	
 	answerPanel.pushAnswer = function(app, answerid){
-
+			console.log('location!~')
+			console.log(app.curlatlon)
 			loc = app.curlatlon;
 			qid = app.questions[app.curIndex].qid;
-		
+
 			$.getJSON( "http://services.mapossum.org/addresponse?qid=" + qid + "&answerid=" + answerid + "&location=" + loc + "&callback=?", function( data ) {  
 				  d = new Date();
 				  v = d.getTime();    	

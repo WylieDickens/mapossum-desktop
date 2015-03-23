@@ -46,8 +46,7 @@ define([
 		userPanel
 		) {
 		
-  	console.log(pac);
-
+  	
 	var app = new Object();
 	app.MAP, app.questions, app.maptype = "subs", app.curIndex, app.mapossumLayer, app.curlatlon, app.bh = [];
 	var questionsGrid, loggedIn = 0, clicked, userAcc=[],  mapAdded = false, legendsize;
