@@ -159,7 +159,7 @@ define("createQuestionPanel",
 		//http://localhost:8080/addquestion?userid=-4&question=Test&hidden=true
 		
 		addQSubmit = new Object();
-		addQSubmit.userid = -1 ;//app.userid;
+		addQSubmit.userid = -10 ;//app.userid;
 		addQSubmit.hidden = subData.hidden;
 		addQSubmit.question = subData.qtext;
 		addQSubmit.explain = subData.explain;
@@ -173,9 +173,18 @@ define("createQuestionPanel",
 	
 	submitAnswers: function(answers, data) {
 	
+		this.submittedQuestions = 0;
 		console.log(data, answers);
 		addAURL = "http://services.mapossum.org/addanswer"
-		addAfunction = $.proxy(function(data) {console.log("aaa", data)}, this);
+		addAfunction = $.proxy(function(data) {
+		
+					this.submittedQuestions++; console.log("aaa", data, this.submittedQuestions, answers.length)
+					if (this.submittedQuestions == answers.length) {
+					
+						//allSubmitted!
+					
+					}
+				}, this);
 		
 		$.each(answers, $.proxy( function(i,a) {
 	
