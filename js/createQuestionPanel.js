@@ -45,7 +45,7 @@ define("createQuestionPanel",
 		
 		console.log(this.submitbutton);
 		
-		this.submitbutton.bind( "click", $.proxy( this.submitQuestion, this ) )
+		this.submitbutton.bind( "click", $.proxy( this.prepareSubmit, this ) )
 		
 		this.questionText = this.div.find('[data-api="question"]');
 		this.questionText.bind("click",$.proxy( function() {this.removeClass( "redinvalid" )}, this.questionText ) )
@@ -100,7 +100,7 @@ define("createQuestionPanel",
 			
 		},
 		
-		submitQuestion: function() {
+		prepareSubmit: function() {
 			
 			isvalid = true;
 			questionValue = this.questionText[0].value;
@@ -111,32 +111,83 @@ define("createQuestionPanel",
 				this.questionText.removeClass( "redinvalid" )
 			}
 		
-			answers = this.div.find(".answer").find(":text");
+			answers = this.div.find(".answer");
 
-			answersText = new Array();
+			answersOut = new Array();
 				$.each(answers, $.proxy( function(i,a) {
-					if (a.value == "") {
-						$(a).addClass( "redinvalid" )
+					answerObj = new Object();
+					clr = $(a).find('[name="color"]')[0];
+					txt = $(a).find('[name="text"]')[0];
+					if (txt.value == "") {
+						$(txt).addClass( "redinvalid" )
 						isvalid = false;
 					} else {
-						$(a).removeClass( "redinvalid" )
+						$(txt).removeClass( "redinvalid" )
 					}
-					answersText.push(a.value);
+					answerObj.color = clr.value;
+					answerObj.text = txt.value;
+					answersOut.push(answerObj);
 				}, this ) )
 			
 			
-			this.explainValue = this.div.find('[data-api="explain"]')[0].value;
-			this.hiddenValue = this.div.find('[data-api="hidden"]')[0].checked;
+			explainValue = this.div.find('[data-api="explain"]')[0].value;
+			hiddenValue = this.div.find('[data-api="hidden"]')[0].checked;
 			
-			console.log(questionValue, answersText, this.explainValue, this.hiddenValue);
+			console.log(questionValue, answersOut, explainValue, hiddenValue);
+			subData = new Object();
+			subData.qtext = questionValue;
+			subData.answers = answersOut;
+			subData.explain = explainValue;
+			subData.hidden = hiddenValue;
 			
 			if (isvalid) {
-				alert("submit");
+				//alert("submit");
+				//this.submitbutton.bind( "click", $.proxy( this.submitQuestion, this ) )
+				this.submitQuestion(subData);
+				
 			} else {
-				alert("do not submit");
+				//alert("do not submit");
 			}
 			
-		}
+		},
+		
+	submitQuestion: function(subData) {
+	
+		console.log(this, subData);
+		
+		
+		//http://localhost:8080/addquestion?userid=-4&question=Test&hidden=true
+		
+		addQSubmit = new Object();
+		addQSubmit.userid = -1 ;//app.userid;
+		addQSubmit.hidden = subData.hidden;
+		addQSubmit.question = subData.qtext;
+		addQSubmit.explain = subData.explain;
+
+		addQURL = "http://services.mapossum.org/addquestion"
+		
+		addQfunction = $.proxy(this.submitAnswers, this, subData.answers);
+		$.getJSON( addQURL, addQSubmit, addQfunction);
+	
+	},
+	
+	submitAnswers: function(answers, data) {
+	
+		console.log(data, answers);
+		addAURL = "http://services.mapossum.org/addanswer"
+		addAfunction = $.proxy(function(data) {console.log("aaa", data)}, this);
+		
+		$.each(answers, $.proxy( function(i,a) {
+	
+			addASubmit = new Object();
+			addASubmit.qid = data.qid;
+			addASubmit.answer = a.text;
+			addASubmit.color = "#" + a.color 
+			$.getJSON( addAURL, addASubmit, addAfunction);
+		
+		}, this ));
+	
+	}
      
 		
     };
