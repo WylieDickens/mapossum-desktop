@@ -152,23 +152,47 @@ define([
 
     }
 	
+	$(document).keydown(function(a) {
+		if (a.which == 39) {
+			nextQuestion();
+		} 
+		if (a.which == 37) {
+			previousQuestion();
+		} 
+	} )
 	
 	$( window ).resize(function() {
 		doLayout();
 	});
 
-	$("#nextQuestion").bind('click', function(){		
-		app.curIndex += 1
-		if(app.curIndex == 10){
-			pbut = $($(".next a")[0]);
-			pbut.trigger("click");
+	$("#nextQuestion").bind('click', nextQuestion);
+	
+	nextQuestion = function(){		
+			app.curIndex += 1
+			if(app.curIndex == 10){
+				pbut = $($(".next a")[0]);
+				pbut.trigger("click");
+				return
+			}
+			else{
+				gotoquestion(app.questions[app.curIndex])
+			}		
+			disableButtons();
+		}
+		
+	previousQuestion = function(){		
+		app.curIndex -= 1
+		console.log(app.curIndex)
+		if(app.curIndex == -1){		
+			$($(".prev a")[0]).trigger("click");
 			return
 		}
 		else{
 			gotoquestion(app.questions[app.curIndex])
-		}		
+		}	
+		
 		disableButtons();
-	});
+	}
 	
 	isFinal = function(buttonClass){
 			pbut = $($("." + buttonClass + " a")[0]);
@@ -192,19 +216,7 @@ define([
 	
 	}
 
-	$("#previousQuestion").bind('click', function(){		
-		app.curIndex -= 1
-		console.log(app.curIndex)
-		if(app.curIndex == -1){		
-			$($(".prev a")[0]).trigger("click");
-			return
-		}
-		else{
-			gotoquestion(app.questions[app.curIndex])
-		}	
-		
-		disableButtons();
-	});
+	$("#previousQuestion").bind('click', previousQuestion);
 
 
 
@@ -253,13 +265,17 @@ define([
 		app.maptype = newMapType
 	 	app.mapossumLayer.options.maptype = newMapType
 	 	app.mapossumLayer.redraw();
-	 	//updateHash();
+	 	//buildHash();
+		c = app.MAP.getCenter();
+		app.MAP.panTo([c.lat +0.1,c.lng]);
+		c = app.MAP.getCenter();
+		app.MAP.panTo([c.lat -0.1,c.lng]);
 	}
 
 	changeQuestion = function(qid) {	    
 		app.mapossumLayer.options.qid = qid
 		app.mapossumLayer.redraw();
-		//updateHash();
+		//buildHash();
 	}
 
 	getLegend = function(qid){
@@ -272,7 +288,7 @@ define([
 	}
 
 	buildHash = function() {
-		try {
+		//try {
 			app.bh = [];			
 			c = app.MAP.getCenter();
 			app.bh.push(app.questions[app.curIndex].qid);
@@ -280,10 +296,11 @@ define([
 			app.bh.push(app.MAP.getZoom())
 			app.bh.push(c.lat);
 			app.bh.push(c.lng);
+			console.log (window.location.hash, app.bh.join("|"))
 			window.location.hash = app.bh.join("|")
-		} catch(e) {
-			console.log('hash not set');
-		}
+		//} catch(e) {
+		//	console.log('hash not set');
+		//}
 	}
 	
 	highlightCurrentRow = function() {

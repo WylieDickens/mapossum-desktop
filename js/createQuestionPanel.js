@@ -181,6 +181,7 @@ define("createQuestionPanel",
 					this.submittedQuestions++; console.log("aaa", data, this.submittedQuestions, answers.length)
 					if (this.submittedQuestions == answers.length) {
 					
+						$.getJSON("http://services.mapossum.org/setupmaps", {"qid":data.qid}, function() {alert("It was all added good!")});
 						//allSubmitted!
 					
 					}
