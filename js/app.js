@@ -158,7 +158,14 @@ define([
 		} 
 		if (a.which == 37) {
 			previousQuestion();
-		} 
+		}
+		if (a.which == 13) {
+			transitionTo('answerbutton');
+			if($('input[name=ansRadio]:checked').val() > 0){
+				//code here to fire a submit click if they hit enter and have an answer selected
+				//i couldn't seem to get access to this.submit
+			}
+		}  
 	} )
 	
 	$( window ).resize(function() {
