@@ -171,8 +171,6 @@ define([
 	$( window ).resize(function() {
 		doLayout();
 	});
-
-	$("#nextQuestion").bind('click', nextQuestion);
 	
 	nextQuestion = function(){		
 			app.curIndex += 1
@@ -201,6 +199,9 @@ define([
 		disableButtons();
 	}
 	
+	$("#nextQuestion").bind('click', nextQuestion);
+	$("#previousQuestion").bind('click', previousQuestion);
+	
 	isFinal = function(buttonClass){
 			pbut = $($("." + buttonClass + " a")[0]);
 			pbutDaddy = pbut.parent()[0];
@@ -222,10 +223,6 @@ define([
 			}
 	
 	}
-
-	$("#previousQuestion").bind('click', previousQuestion);
-
-
 
 
 	gotoquestion = function(row, zoom){
