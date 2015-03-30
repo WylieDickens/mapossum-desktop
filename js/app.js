@@ -98,7 +98,13 @@ define([
 			ajax: true,
 			caseSensitive: false,
 			rowCount: [10, 25, 50],
-			requestHandler: function (request) {				
+			requestHandler: function (request) {	
+						 //See if hash Exists
+						if (window.location.hash != "") {
+							hashes = window.location.hash.replace("#","").split("|")
+							qid = hashes[0];
+							request.qids = qid
+						}			
 				request.count = request.rowCount;
 				return(request);
 			},
@@ -123,7 +129,7 @@ define([
 				}
 			}
 		}).on("loaded.rs.jquery.bootgrid", function()
-				{						
+				{	
 					gotoquestion(app.questions[app.curIndex]);
 					/* Executes after data is loaded and rendered */
 					questionsGrid.find(".command-map").on("click", function(e)
@@ -164,6 +170,7 @@ define([
 			if($('input[name=ansRadio]:checked').val() > 0){
 				//code here to fire a submit click if they hit enter and have an answer selected
 				//i couldn't seem to get access to this.submit
+				$(ap.submit).trigger( "click" )
 			}
 		}  
 	} )

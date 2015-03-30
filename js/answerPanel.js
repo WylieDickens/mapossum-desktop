@@ -33,6 +33,8 @@ define("answerPanel",
 		
 		$(this.submit).bind('click', function(){			
 			answerPanel.pushAnswer(app, $('input[name=ansRadio]:checked').val() )
+			$('input[name=ansRadio]:checked')[0].checked = false;
+			transitionTo('mapbutton');
 		});
 		
 		var lp = new locationPanel(this.locationDiv, app);
