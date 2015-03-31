@@ -100,7 +100,7 @@ define([
 			rowCount: [10, 25, 50],
 			requestHandler: function (request) {	
 						 //See if hash Exists
-						if (window.location.hash != "") {
+						if ((window.location.hash != "") && (mapAdded == false)) {
 							hashes = window.location.hash.replace("#","").split("|")
 							qid = hashes[0];
 							request.qids = qid
@@ -115,7 +115,14 @@ define([
 				response.rowCount = response.rows.length;  //number of rows in output
 				app.questions = response.data;
 				console.log(app.questions)
-				app.curIndex = 0;			
+				app.curIndex = 0;	
+				hashes = window.location.hash.replace("#","").split("|");
+				qid = hashes[0];
+				$.each(app.questions, function( index, value ) {
+					if (qid == value.qid) {
+						app.curIndex = index;
+					}
+				});				
 				return response;
 			},
 			url: "http://services.mapossum.org/getquestions",
@@ -130,6 +137,7 @@ define([
 			}
 		}).on("loaded.rs.jquery.bootgrid", function()
 				{	
+					// Here we need to implement the rest of the hash (maptype and zoom location)
 					gotoquestion(app.questions[app.curIndex]);
 					/* Executes after data is loaded and rendered */
 					questionsGrid.find(".command-map").on("click", function(e)
