@@ -13,6 +13,7 @@ requirejs.config({
         'leaflet': '//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.2/leaflet' ,
 		"bootstrap" :  "//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min",
 		"bootstrapGrid" :  "//cdnjs.cloudflare.com/ajax/libs/jquery-bootgrid/1.1.4/jquery.bootgrid",
+		"Chart": "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart",
 		"pac": "pick-a-color-1.2.3.min",
 		"tinycolor": "tinycolor"
 		
@@ -29,6 +30,7 @@ define([
 		"answerPanel",
 		"loginModel",
 		"createQuestionPanel",
+		"Chart",
 		"moCharts",
 		"userPanel"
 		], 
@@ -42,6 +44,7 @@ define([
 		answerPanel,
 		loginModel,
 		createQuestionPanel,
+		Chart,
 		moCharts,
 		userPanel
 		) {
@@ -59,6 +62,37 @@ define([
    	
 		doLayout();
 
+		var data = {
+    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    datasets: [
+        {
+            label: "My First dataset",
+            fillColor: "rgba(220,220,220,0.2)",
+            strokeColor: "rgba(220,220,220,1)",
+            pointColor: "rgba(220,220,220,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(220,220,220,1)",
+            data: [65, 59, 80, 81, 56, 55, 40]
+        },
+        {
+            label: "My Second dataset",
+            fillColor: "rgba(151,187,205,0.2)",
+            strokeColor: "rgba(151,187,205,1)",
+            pointColor: "rgba(151,187,205,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(151,187,205,1)",
+            data: [28, 48, 40, 19, 86, 27, 90]
+        }
+    ]
+};
+		
+		var ctx = document.getElementById("myChart").getContext("2d");
+		var myNewChart = new Chart(ctx).Line(data);
+		
+		alert(myNewChart);
+		
 		app.MAP = L.map('mappanel', {trackResize:true, maxZoom:18}).setView([0,0], 2);
 		
 		var bwlayer = L.tileLayer(
@@ -138,7 +172,19 @@ define([
 		}).on("loaded.rs.jquery.bootgrid", function()
 				{	
 					// Here we need to implement the rest of the hash (maptype and zoom location)
-					gotoquestion(app.questions[app.curIndex]);
+					hashes = window.location.hash.replace("#","").split("|");
+					if (hashes.length > 1) {
+						app.maptype = hashes[1];
+					}
+					
+					zoom = {};
+					if (hashes.length > 2) {
+						zoom.ll = [hashes[3], hashes[4]];
+						zoom.center = hashes[2];
+					}
+					
+
+					gotoquestion(app.questions[app.curIndex], zoom);
 					/* Executes after data is loaded and rendered */
 					questionsGrid.find(".command-map").on("click", function(e)
 					{	
@@ -261,9 +307,11 @@ define([
 		getLegend(app.questions[app.curIndex].qid);
 		ap.gotoQuestion(app.questions[app.curIndex].qid);
 
-		if (zoom == undefined) {
+		if (zoom.ll == undefined) {
 			getExtent(app.questions[app.curIndex].qid)
-		} 	
+		} 	else {
+		    app.MAP.setView(zoom.ll, zoom.center)
+		}
 		
 	}
 
