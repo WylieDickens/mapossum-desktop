@@ -51,12 +51,16 @@ define([
 		
   	
 	var app = new Object();
-	app.MAP, app.questions, app.maptype = "subs", app.curIndex, app.mapossumLayer, app.curlatlon, app.bh = [];
+	app.MAP, app.questions, app.maptype = "subs", app.curIndex, app.mapossumLayer, app.curlatlon, app.bh = [], app.chartdata = [];
 	var questionsGrid, loggedIn = 0, clicked, userAcc=[],  mapAdded = false, legendsize;
     
 	var ap = new answerPanel("answerpanel", app);
 	
 	var cqp = new createQuestionPanel("addpanel", app); 
+
+	var cp = new moCharts("chartspanel", app); 
+
+
 
     setup = function() {
    	
@@ -89,9 +93,7 @@ define([
 };
 		
 		var ctx = document.getElementById("myChart").getContext("2d");
-		var myNewChart = new Chart(ctx).Line(data);
-		
-		alert(myNewChart);
+		var myNewChart = new Chart(ctx).Line(data);		
 		
 		app.MAP = L.map('mappanel', {trackResize:true, maxZoom:18}).setView([0,0], 2);
 		
@@ -104,7 +106,6 @@ define([
 		app.MAP.addLayer(bwlayer);
 
 		$($('.maptypeDD')[0]).find("a").on('click', function (el) {
-			console.log(el.target)
 			app.maptype = $(el.target).data("maptype")
 			changemapType(app.maptype)
 		})
@@ -148,7 +149,6 @@ define([
 				//response.total = 100; //total to be done on server
 				response.rowCount = response.rows.length;  //number of rows in output
 				app.questions = response.data;
-				console.log(app.questions)
 				app.curIndex = 0;	
 				hashes = window.location.hash.replace("#","").split("|");
 				qid = hashes[0];
@@ -200,7 +200,7 @@ define([
 						
 					}).end().find(".command-chart").on("click", function(e)
 					{
-						alert("You pressed chart on row: " + $(this).data("row-id"));
+						cp.fetchdata($(this).data("row-id"));												
 					}).end().find(".command-download").on("click", function(e)
 					{						
 						link = document.createElement("a")
@@ -221,9 +221,7 @@ define([
 		}
 		if (a.which == 13) {
 			transitionTo('answerbutton');
-			if($('input[name=ansRadio]:checked').val() > 0){
-				//code here to fire a submit click if they hit enter and have an answer selected
-				//i couldn't seem to get access to this.submit
+			if($('input[name=ansRadio]:checked').val() > 0){				
 				$(ap.submit).trigger( "click" )
 			}
 		}  
@@ -248,7 +246,6 @@ define([
 		
 	previousQuestion = function(){		
 		app.curIndex -= 1
-		console.log(app.curIndex)
 		if(app.curIndex == -1){		
 			$($(".prev a")[0]).trigger("click");
 			return
@@ -276,7 +273,6 @@ define([
 			} else {
 				$("#previousQuestion").css({"opacity": 0.6})
 			}
-			console.log(app.curIndex, app.questions.length)
 			if (isFinal("next") && (app.curIndex == app.questions.length-1)) {
 				$("#nextQuestion").css({"opacity": 0.08})
 			} else {
@@ -346,7 +342,6 @@ define([
 	}
 
 	getLegend = function(qid){
-		console.log('here' + qid)
 		d = new Date();
 		iv = d.getTime(); 		
 		$("#maplegend").empty();			    	
@@ -354,8 +349,7 @@ define([
 		legendImage.appendTo('#maplegend').trigger( "create" )
 	}
 
-	buildHash = function() {
-		//try {
+	buildHash = function() {		
 			app.bh = [];			
 			c = app.MAP.getCenter();
 			app.bh.push(app.questions[app.curIndex].qid);
@@ -363,11 +357,7 @@ define([
 			app.bh.push(app.MAP.getZoom())
 			app.bh.push(c.lat);
 			app.bh.push(c.lng);
-			console.log (window.location.hash, app.bh.join("|"))
-			window.location.hash = app.bh.join("|")
-		//} catch(e) {
-		//	console.log('hash not set');
-		//}
+			window.location.hash = app.bh.join("|")		
 	}
 	
 	highlightCurrentRow = function() {
@@ -377,8 +367,7 @@ define([
 		});
 		
 		
-		cgridrow = questionsGrid.find('[data-row-id=' + app.curIndex + ']')[0]
-		console.log(cgridrow);
+		cgridrow = questionsGrid.find('[data-row-id=' + app.curIndex + ']')[0]	
 		$(cgridrow).css({"background": "#ADCAE2"})
 		
 	}
@@ -451,41 +440,6 @@ define([
 		}
 	}
 
-	/* verify user login information -- if successful, user questions are stored for the account page*/
-	verify = function (email, password){
-	    $.getJSON( "http://services.mapossum.org/verify?email=" + email + "&password=" + password + "&callback=?", function( data ) {
-	      mpapp.userid = data.userid;
-	      if(data.userid != -1){	        
-	      	//$('#loginIcon').css( "background-color", "green" ); may use this later  	
-	      	mpapp.first = data.first
-	      	mpapp.last = data.last
-	      	mpapp.loggedUid = data.userid	      	
-	      	$.getJSON( "http://services.mapossum.org/getquestions?users=" + mpapp.loggedUid + "&minutes=0" + "&callback=?", function( userQuestions ) {
-	      		info = userQuestions.data      		     	
-	      		for(var i = 0; i < info.length; i++ ){ 
-	      			ques = {question:info[i].question, explain:info[i].explain, uid:info[i].userid, qid:info[i].qid, hashtag:info[i].hashtag}
-	      			userAcc.push(ques); 			
-	      		}	      		
-	      	});
-	      	if(clicked === "userbutton"){
-	      		loggedIn = 1;
-	      		$('#loginModal').modal('hide')
-	      		transitionTo("userbutton")
-	      	}
-	      	else if(clicked === "addbutton"){
-	      		loggedIn = 1;
-	      		$('#loginModal').modal('hide')
-	      		transitionTo("addbutton")
-	      	}
-	      }
-	      else{
-	      	alert(data.message)
-	      	$('#loginModal').modal('show')
-	      }
-	      
-	    });
-	}
-
 	/* layout the page on a resize */
 	doLayout = function() {
 		mapwidth = $( window ).width() - $( "#control" ).width(); //- 5;
@@ -530,22 +484,6 @@ define([
 	  }
 	  return $(this); 
 	};	
-	
-
-	/* login click event */
-	$("#verify").bind('click', function(e) {
-		email = $("#txtUsername").val()
-		password = $("#txtPassword").val()  
-		verify(email, password)
-	});
-    
- 	// sem = localStorage.semail;
-	// spass = localStorage.spassword;
-	// console.log(sem +" "+spass)
-
-	//  if (sem != undefined) {
-	// 	verify(sem,spass)
-	// }
 
 	$( document ).ready( setup )
 	
