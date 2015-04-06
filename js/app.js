@@ -5,9 +5,9 @@ requirejs.config({
         "bootstrap" : { "deps" :['jquery'] },
 		"bootstrapGrid" : { "deps" :['jquery'] },
 		"tinycolor": { "deps" :['jquery'] },
-		"pac": { "deps" :['jquery', "bootstrap", "tinycolor"] } 
+		"pac": { "deps" :['jquery', "bootstrap", "tinycolor"] }
     },
-    paths: { 
+    paths: {
         /* Load jquery from google cdn. On fail, load local file. */
         'jquery': ['//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min', 'libs/jquery-min'],
         'leaflet': '//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.2/leaflet' ,
@@ -16,13 +16,13 @@ requirejs.config({
 		"Chart": "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart",
 		"pac": "pick-a-color-1.2.3.min",
 		"tinycolor": "tinycolor"
-		
+
     }
 });
 
 define([
-		'jquery', 
-		'leaflet', 
+		'jquery',
+		'leaflet',
 		'bootstrap',
 		"bootstrapGrid",
 		"tinycolor",
@@ -33,10 +33,10 @@ define([
 		"Chart",
 		"moCharts",
 		"userPanel"
-		], 
+		],
 		function(
-		$, 
-		L, 
+		$,
+		L,
 		bs,
 		bg,
 		tc,
@@ -48,61 +48,29 @@ define([
 		moCharts,
 		userPanel
 		) {
-		
-  	
+
+
 	var app = new Object();
-	app.MAP, app.questions, app.maptype = "subs", app.curIndex, app.mapossumLayer, app.curlatlon, app.bh = [], app.chartdata = [];
+	app.MAP, app.questions, app.maptype = "subs", app.curIndex, app.mapossumLayer, app.curlatlon, app.bh = [];
 	var questionsGrid, loggedIn = 0, clicked, userAcc=[],  mapAdded = false, legendsize;
-    
+
 	var ap = new answerPanel("answerpanel", app);
-	
-	var cqp = new createQuestionPanel("addpanel", app); 
 
-	var cp = new moCharts("chartspanel", app); 
+	var cqp = new createQuestionPanel("addpanel", app);
 
-
+	var cp = new moCharts("chartspanel", app);
 
     setup = function() {
-   	
-		doLayout();
 
-		var data = {
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
-    datasets: [
-        {
-            label: "My First dataset",
-            fillColor: "rgba(220,220,220,0.2)",
-            strokeColor: "rgba(220,220,220,1)",
-            pointColor: "rgba(220,220,220,1)",
-            pointStrokeColor: "#fff",
-            pointHighlightFill: "#fff",
-            pointHighlightStroke: "rgba(220,220,220,1)",
-            data: [65, 59, 80, 81, 56, 55, 40]
-        },
-        {
-            label: "My Second dataset",
-            fillColor: "rgba(151,187,205,0.2)",
-            strokeColor: "rgba(151,187,205,1)",
-            pointColor: "rgba(151,187,205,1)",
-            pointStrokeColor: "#fff",
-            pointHighlightFill: "#fff",
-            pointHighlightStroke: "rgba(151,187,205,1)",
-            data: [28, 48, 40, 19, 86, 27, 90]
-        }
-    ]
-};
-		
-		var ctx = document.getElementById("myChart").getContext("2d");
-		var myNewChart = new Chart(ctx).Line(data);		
-		
+		doLayout();
 		app.MAP = L.map('mappanel', {trackResize:true, maxZoom:18}).setView([0,0], 2);
-		
+
 		var bwlayer = L.tileLayer(
 					'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 					//attribution: '&copy; Mapossum',
 					maxZoom: 18,
 					})
-		
+
 		app.MAP.addLayer(bwlayer);
 
 		$($('.maptypeDD')[0]).find("a").on('click', function (el) {
@@ -113,33 +81,33 @@ define([
 		app.MAP.on('move', function(e) {
 		    buildHash();
 		});
-  
+
 
 		$(".controlbutton").click(function(e){
-		
+
 			if (e.target.className == "controltitle") {
 				targetOut = e.target.parentElement.id;
 			} else {
 				targetOut = e.target.id;
 			};
-			transitionTo(targetOut);			
+			transitionTo(targetOut);
 		});
-		
+
 		transitionTo("mapbutton");
-		
+
 		 $('[data-toggle="tooltip"]').tooltip();
-		 
+
 		questionsGrid = $("#grid-data").bootgrid({
 			ajax: true,
 			caseSensitive: false,
 			rowCount: [10, 25, 50],
-			requestHandler: function (request) {	
+			requestHandler: function (request) {
 						 //See if hash Exists
 						if ((window.location.hash != "") && (mapAdded == false)) {
 							hashes = window.location.hash.replace("#","").split("|")
 							qid = hashes[0];
 							request.qids = qid
-						}			
+						}
 				request.count = request.rowCount;
 				return(request);
 			},
@@ -149,14 +117,14 @@ define([
 				//response.total = 100; //total to be done on server
 				response.rowCount = response.rows.length;  //number of rows in output
 				app.questions = response.data;
-				app.curIndex = 0;	
+				app.curIndex = 0;
 				hashes = window.location.hash.replace("#","").split("|");
 				qid = hashes[0];
 				$.each(app.questions, function( index, value ) {
 					if (qid == value.qid) {
 						app.curIndex = index;
 					}
-				});				
+				});
 				return response;
 			},
 			url: "http://services.mapossum.org/getquestions",
@@ -164,32 +132,32 @@ define([
 				"commands": function(column, row)
 				{
 
-					return "<button type=\"button\" class=\"btn btn-xs btn-default command-map\" data-row-id=\"" + row.qid + "\"><span class=\"fa fa-globe\"></span></button> " + 
-						   "<button type=\"button\" class=\"btn btn-xs btn-default command-chart\" data-row-id=\"" + row.qid + "\"><span class=\"fa fa-bar-chart\"></span></button>" + 
+					return "<button type=\"button\" class=\"btn btn-xs btn-default command-map\" data-row-id=\"" + row.qid + "\"><span class=\"fa fa-globe\"></span></button> " +
+						   "<button type=\"button\" class=\"btn btn-xs btn-default command-chart\" data-row-id=\"" + row.qid + "\"><span class=\"fa fa-bar-chart\"></span></button>" +
 						   "<button style='margin-left:4px' type=\"button\" class=\"btn btn-xs btn-default command-download\" data-row-id=\"" + row.qid + "\"><span class=\"fa fa-cloud-download\"></span></button>";
 				}
 			}
 		}).on("loaded.rs.jquery.bootgrid", function()
-				{	
+				{
 					// Here we need to implement the rest of the hash (maptype and zoom location)
 					hashes = window.location.hash.replace("#","").split("|");
 					if (hashes.length > 1) {
 						app.maptype = hashes[1];
 					}
-					
+
 					zoom = {};
 					if (hashes.length > 2) {
 						zoom.ll = [hashes[3], hashes[4]];
 						zoom.center = hashes[2];
 					}
-					
+
 
 					gotoquestion(app.questions[app.curIndex], zoom);
 					/* Executes after data is loaded and rendered */
 					questionsGrid.find(".command-map").on("click", function(e)
-					{	
+					{
 						cqid = $(this).data("row-id")
-						$.each(app.questions, function( index, value ) {												
+						$.each(app.questions, function( index, value ) {
 							if(value.qid == cqid){
 								app.curIndex = index
 								gotoquestion(value)
@@ -197,41 +165,50 @@ define([
 								return
 							}
 						});
-						
+
 					}).end().find(".command-chart").on("click", function(e)
 					{
-						cp.fetchdata($(this).data("row-id"));												
+						cp.fetchdata($(this).data("row-id"));
+            transitionTo("chartsbutton");
+            cqid = $(this).data("row-id")
+						$.each(app.questions, function( index, value ) {
+							if(value.qid == cqid){
+								app.curIndex = index
+								gotoquestion(value)
+								return
+							}
+            });
 					}).end().find(".command-download").on("click", function(e)
-					{						
+					{
 						link = document.createElement("a")
-						link.href = "http://services.mapossum.org/download/" + $(this).data("row-id") + ".csv"					
+						link.href = "http://services.mapossum.org/download/" + $(this).data("row-id") + ".csv"
 						link.click()
-						$('#downloadModal').modal('show'); 	
+						$('#downloadModal').modal('show');
 					});
 				});
 
     }
-	
+
 	$(document).keydown(function(a) {
 		if (a.which == 39) {
 			nextQuestion();
-		} 
+		}
 		if (a.which == 37) {
 			previousQuestion();
 		}
 		if (a.which == 13) {
 			transitionTo('answerbutton');
-			if($('input[name=ansRadio]:checked').val() > 0){				
+			if($('input[name=ansRadio]:checked').val() > 0){
 				$(ap.submit).trigger( "click" )
 			}
-		}  
+		}
 	} )
-	
+
 	$( window ).resize(function() {
 		doLayout();
 	});
-	
-	nextQuestion = function(){		
+
+	nextQuestion = function(){
 			app.curIndex += 1
 			if(app.curIndex == 10){
 				pbut = $($(".next a")[0]);
@@ -240,32 +217,32 @@ define([
 			}
 			else{
 				gotoquestion(app.questions[app.curIndex])
-			}		
+			}
 			disableButtons();
 		}
-		
-	previousQuestion = function(){		
+
+	previousQuestion = function(){
 		app.curIndex -= 1
-		if(app.curIndex == -1){		
+		if(app.curIndex == -1){
 			$($(".prev a")[0]).trigger("click");
 			return
 		}
 		else{
 			gotoquestion(app.questions[app.curIndex])
-		}	
-		
+		}
+
 		disableButtons();
 	}
-	
+
 	$("#nextQuestion").bind('click', nextQuestion);
 	$("#previousQuestion").bind('click', previousQuestion);
-	
+
 	isFinal = function(buttonClass){
 			pbut = $($("." + buttonClass + " a")[0]);
 			pbutDaddy = pbut.parent()[0];
 			return (pbutDaddy.className.indexOf("disabled") > -1);
 	}
-	
+
 	disableButtons = function() {
 
 			if (isFinal("prev") && (app.curIndex == 0)) {
@@ -278,27 +255,28 @@ define([
 			} else {
 				$("#nextQuestion").css({"opacity": 0.6})
 			}
-	
+
 	}
 
 
 	gotoquestion = function(row, zoom){
-		if(mapAdded == false){						
+		if(mapAdded == false){
 			d = new Date();
-			iv = d.getTime();		
+			iv = d.getTime();
 			app.mapossumLayer = L.tileLayer('http://maps.mapossum.org/{qid}/{maptype}/{z}/{x}/{y}.png?v={v}', {maptype: app.maptype, qid:app.questions[app.curIndex].qid, v: iv, opacity: 0.7})
 			app.mapossumLayer.addTo(app.MAP);
-			mapAdded = true;						
+			mapAdded = true;
 		}
-		else{			
+		else{
 			changeQuestion(app.questions[app.curIndex].qid);
-		}	
+      cp.fetchdata(app.questions[app.curIndex].qid)
+		}
 		$("#maptitle").html( '<center>' + row.question + '</center>' );
 		$("#maptitle").css('font-size', "30px");
 		$("#maptitle").autoSizr();
-		
+
 		disableButtons();
-		
+
 		highlightCurrentRow();
 		getLegend(app.questions[app.curIndex].qid);
 		ap.gotoQuestion(app.questions[app.curIndex].qid);
@@ -308,19 +286,19 @@ define([
 		} 	else {
 		    app.MAP.setView(zoom.ll, zoom.center)
 		}
-		
+
 	}
 
-	getExtent = function(qid){	
-		$.getJSON( "http://services.mapossum.org/getextent/"+ qid + "/" + app.maptype + "?callback=?", function( data ) {      	
-	 		minExtent = data[0]; 		
+	getExtent = function(qid){
+		$.getJSON( "http://services.mapossum.org/getextent/"+ qid + "/" + app.maptype + "?callback=?", function( data ) {
+	 		minExtent = data[0];
 	 		maxExtent = data[1];
-	 		bounds = [minExtent, maxExtent];  			
+	 		bounds = [minExtent, maxExtent];
 	 		fitBounds(bounds)
 	 	});
 	}
 
-	fitBounds = function(bounds){	
+	fitBounds = function(bounds){
 		app.MAP.fitBounds(bounds, {padding:0});
 	}
 
@@ -335,7 +313,7 @@ define([
 		app.MAP.panTo([c.lat -0.1,c.lng]);
 	}
 
-	changeQuestion = function(qid) {	    
+	changeQuestion = function(qid) {
 		app.mapossumLayer.options.qid = qid
 		app.mapossumLayer.redraw();
 		//buildHash();
@@ -343,36 +321,36 @@ define([
 
 	getLegend = function(qid){
 		d = new Date();
-		iv = d.getTime(); 		
-		$("#maplegend").empty();			    	
+		iv = d.getTime();
+		$("#maplegend").empty();
 		legendImage = $('<img src="http://services.mapossum.org/legend/' +qid+'?v='+ iv + '&opacity=0&color=black" width="' + legendsize + '">')
 		legendImage.appendTo('#maplegend').trigger( "create" )
 	}
 
-	buildHash = function() {		
-			app.bh = [];			
+	buildHash = function() {
+			app.bh = [];
 			c = app.MAP.getCenter();
 			app.bh.push(app.questions[app.curIndex].qid);
 			app.bh.push(app.maptype);
 			app.bh.push(app.MAP.getZoom())
 			app.bh.push(c.lat);
 			app.bh.push(c.lng);
-			window.location.hash = app.bh.join("|")		
+			window.location.hash = app.bh.join("|")
 	}
-	
+
 	highlightCurrentRow = function() {
-		
+
 		questionsGrid.find('tr').each(function( index, el ) {
 			$(el).css({"background": ""})
 		});
-		
-		
-		cgridrow = questionsGrid.find('[data-row-id=' + app.curIndex + ']')[0]	
+
+
+		cgridrow = questionsGrid.find('[data-row-id=' + app.curIndex + ']')[0]
 		$(cgridrow).css({"background": "#ADCAE2"})
-		
+
 	}
-	
-	
+
+
 	/* function to change divs */
 	transitionTo = function(buttonClicked) {
 		if((buttonClicked == "userbutton" || buttonClicked == "addbutton") && app.loggedIn == 0){
@@ -380,57 +358,57 @@ define([
 			$('#loginModal').modal('show')
 			return
 		}
-	
-		//$($(".next a")[0]).trigger("click");  trigger to move			
+
+		//$($(".next a")[0]).trigger("click");  trigger to move
 		panel = "#" + buttonClicked.replace("button","panel");
-		
+
 		if ($(panel)[0] == undefined) {
-		
-			
-		
-		
+
+
+
+
 		} else {
-		
-		
-		
+
+
+
 		$( ".controlpanel" ).each(function( index, el ) {
-			if ( "#" + el.id != panel ) { 
-			
+			if ( "#" + el.id != panel ) {
+
 				$( el ).animate({
 					opacity: 0,
 				}, 400, function() {
 					$(el).css("z-index", -1)
 				});
-			
-			
+
+
 			};
 		});
-		
+
 		/* fades the divs */
 		$( ".controlbutton" ).each(function( index, el ) {
 			curop = $(el).css( "opacity" );
-			if ( el.id == buttonClicked ) { 
-			
+			if ( el.id == buttonClicked ) {
+
 				$( el ).animate({
 					opacity: 1,
 				}, 300, function() {
-				
+
 				});
-		
+
 			} else {
-			
+
 				$( el ).animate({
 					opacity: 0.6,
 				}, 300, function() {
-				
+
 				});
-			
+
 			}
 		});
 
 		$( panel ).css({"opacity": 0});
 		$( panel ).css("z-index", 400)
-		
+
 		$( panel ).animate({
 			opacity: 1,
 		}, 400, function() {
@@ -443,19 +421,19 @@ define([
 	/* layout the page on a resize */
 	doLayout = function() {
 		mapwidth = $( window ).width() - $( "#control" ).width(); //- 5;
-		maphieght = $( window ).height() - $( "#header" ).height() - $( "#footer" ).height();
+		mapheight = $( window ).height() - $( "#header" ).height() - $( "#footer" ).height();
 		titleWidth = mapwidth - $( "#nextQuestion" ).width() - $( "#previousQuestion" ).width() - 20;  // this last number has to be total of the margins and padding for each element in the footing area is.
 		legendsize = mapwidth/8
-		
+
 		if(app.questions != undefined){
 			getLegend(app.questions[app.curIndex].qid)
 		}
 
 		$( "#mainpanel" ).css({"width": mapwidth + "px"});
-		$( "#mainpanel" ).css({"height": maphieght + "px"});
-		$( "#control" ).css({"height": maphieght + "px"});	
+		$( "#mainpanel" ).css({"height": mapheight + "px"});
+		$( "#control" ).css({"height": mapheight + "px"});
 		$( "#maptitle" ).css({"width": titleWidth + "px"});
-		
+
 	};
 
 	$.fn.autoSizr = function () {
@@ -482,11 +460,11 @@ define([
 	      return _results1;
 	    })(el));
 	  }
-	  return $(this); 
-	};	
+	  return $(this);
+	};
 
 	$( document ).ready( setup )
-	
+
     return {};
-    
+
 });
