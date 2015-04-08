@@ -147,8 +147,8 @@ define([
 
 					zoom = {};
 					if (hashes.length > 2) {
-						zoom.ll = [hashes[3], hashes[4]];
-						zoom.center = hashes[2];
+						zoom.center = [hashes[3], hashes[4]];
+						zoom.level = hashes[2];
 					}
 
 
@@ -260,6 +260,8 @@ define([
 
 
 	gotoquestion = function(row, zoom){
+	
+	if (zoom == undefined) {zoom = {}};
 		if(mapAdded == false){
 			d = new Date();
 			iv = d.getTime();
@@ -281,10 +283,10 @@ define([
 		getLegend(app.questions[app.curIndex].qid);
 		ap.gotoQuestion(app.questions[app.curIndex].qid);
 
-		if (zoom.ll == undefined) {
+		if (zoom.center == undefined) {
 			getExtent(app.questions[app.curIndex].qid)
 		} 	else {
-		    app.MAP.setView(zoom.ll, zoom.center)
+		    app.MAP.setView(zoom.center, zoom.level)
 		}
 
 	}
