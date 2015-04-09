@@ -53,13 +53,16 @@ define([
 	var app = new Object();
 	app.MAP, app.questions, app.maptype = "subs", app.curIndex, app.mapossumLayer, app.curlatlon, app.bh = [];
 	app.previousPanel = new Array();
-	var questionsGrid, loggedIn = 0, clicked, userAcc=[],  mapAdded = false, legendsize;
+	app.loggedIn = 0;
+	var questionsGrid, clicked, userAcc=[],  mapAdded = false, legendsize;
 
 	var ap = new answerPanel("answerpanel", app);
 
 	var cqp = new createQuestionPanel("addpanel", app);
 
 	var cp = new moCharts("chartspanel", app);
+	
+	var loginPanel = new loginModel(app);
 
     setup = function() {
 
@@ -357,10 +360,11 @@ define([
 	/* function to change divs */
 	transitionTo = function(buttonClicked) {
 		app.previousPanel.push(buttonClicked);
-		
+	
 		if((buttonClicked == "userbutton" || buttonClicked == "addbutton") && app.loggedIn == 0){
 			clicked = buttonClicked;
-			$('#loginModal').modal('show')
+			loginPanel.show();
+			//$('#loginModal').modal('show')
 			return
 		}
 

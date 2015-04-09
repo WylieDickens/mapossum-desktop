@@ -1,0 +1,41 @@
+	<div class="modal fade" id="loginModal">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title">Login</h4>
+		      </div>
+			  <div class="form-group">
+			    <label for="txtUsername">Email address</label>
+			    <input type="email" class="form-control" id="txtUsername" placeholder="Enter email">
+			  </div>
+			  <div class="form-group">
+			    <label for="txtPassword">Password</label>
+			    <input type="password" class="form-control" id="txtPassword" placeholder="Password">
+			  </div>
+
+			
+			<div class="form-group">
+			<div>
+		      <div class="checkbox">
+		        <label>
+		          <input type="checkbox" id"checklogin"> Remember me
+		        </label>
+		      </div>
+		      </div>
+		  	</div>
+			
+			<div class="form-group" style="display:none">
+				Login with Social Media (We don't store anything on our servers): 
+				<button data-toggle="tooltip" data-placement="top" title="Sign on with Google" type="button" class="btn btn-danger" id="verify"><span class="fa fa fa-google-plus"></span></button>
+				<button data-toggle="tooltip" data-placement="top" title="Sign on with Facebook" type="button" class="btn btn-primary" id="verify"><span class="fa fa-facebook"></span></button>
+			</div>		
+			
+	      	<div class="modal-footer">
+				<button type="button" class="btn btn-info" id="verify">Sign Up</button>
+	        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        	<button type="button" class="btn btn-primary" id="verify">Login</button>
+	      	</div>
+	  	</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
