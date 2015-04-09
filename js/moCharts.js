@@ -12,14 +12,25 @@ define(function () {
 				this.type = "Bar"
 
 		    $($('.charttypeDD')[0]).find("a").on('click', $.proxy(function (el) {
-					console.log($(el.target).data("charttype"))
+					//console.log($(el.target).data("charttype"))
 					this.type = $(el.target).data("charttype")
 					this.updatechart($(el.target).data("charttype"))
 				}, this))
 
+			mybutt = $('<button style="position:absolute;top:3px;right:3px;z-index:30" type="button" data-toggle="tooltip" data-placement="left" title="" data-original-title="Close the Charts"><span class="fa fa-times"></span> </button>');
+			this.div.append(mybutt);
+			
+			mybutt.on('click', $.proxy(function (el) {
+				transitionTo(this.app.previousPanel[this.app.previousPanel.length-2]);
+				this.mainDiv.empty();
+			}, this))
+			
 				this.mainDiv = $('<div></div>');
 				this.div.append(this.mainDiv);
 
+				
+
+			
     }
 
     moCharts.prototype = {
@@ -30,7 +41,6 @@ define(function () {
 
             $.getJSON( "http://services.mapossum.org/getanswers?qid=" + qid + "&callback=?", $.proxy(function( data ) {
 							this.data = data.data
-							
 							
 							this.updatechart(this.type)
             },this));
@@ -58,7 +68,7 @@ define(function () {
 
 					this.currentdata = google.visualization.arrayToDataTable(dataout);
 					
-					console.log(sly);
+					//console.log(sly);
 					
 					if(type == "Bar"){
 					
@@ -70,8 +80,6 @@ define(function () {
 						  legend: { position: "none" },
 						  bar: {groupWidth: "95%"}
 						};
-
-						console.log
 						
 						this.chart = new google.visualization.BarChart(this.canvas);
 						//this.chart.draw(this.currentdata, this.options);
@@ -86,12 +94,10 @@ define(function () {
 						  backgroundColor: { fill:'transparent' },
 						  slices: sly
 						};
-
-						console.log
 						
 						this.chart = new google.visualization.PieChart(this.canvas);
 						//this.chart.draw(this.currentdata, this.options);
-
+						
 					}
 					this.resize();
 				},
