@@ -13,7 +13,7 @@ requirejs.config({
         'leaflet': '//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.2/leaflet' ,
 		"bootstrap" :  "//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min",
 		"bootstrapGrid" :  "//cdnjs.cloudflare.com/ajax/libs/jquery-bootgrid/1.1.4/jquery.bootgrid",
-		"Chart": "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart",
+//		"Chart": "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart",
 		"pac": "pick-a-color-1.2.3.min",
 		"tinycolor": "tinycolor"
     }
@@ -29,7 +29,7 @@ define([
 		"answerPanel",
 		"loginModel",
 		"createQuestionPanel",
-		"Chart",
+	//	"Chart",
 		"moCharts",
 		"userPanel",
 		'goog!visualization,1,packages:[corechart,geochart]'
@@ -44,7 +44,7 @@ define([
 		answerPanel,
 		loginModel,
 		createQuestionPanel,
-		Chart,
+	//	Chart,
 		moCharts,
 		userPanel,
 		goog
@@ -52,6 +52,7 @@ define([
 
 	var app = new Object();
 	app.MAP, app.questions, app.maptype = "subs", app.curIndex, app.mapossumLayer, app.curlatlon, app.bh = [];
+	app.previousPanel = new Array();
 	var questionsGrid, loggedIn = 0, clicked, userAcc=[],  mapAdded = false, legendsize;
 
 	var ap = new answerPanel("answerpanel", app);
@@ -355,6 +356,8 @@ define([
 
 	/* function to change divs */
 	transitionTo = function(buttonClicked) {
+		app.previousPanel.push(buttonClicked);
+		
 		if((buttonClicked == "userbutton" || buttonClicked == "addbutton") && app.loggedIn == 0){
 			clicked = buttonClicked;
 			$('#loginModal').modal('show')
