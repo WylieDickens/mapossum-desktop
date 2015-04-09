@@ -16,7 +16,6 @@ requirejs.config({
 		"Chart": "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart",
 		"pac": "pick-a-color-1.2.3.min",
 		"tinycolor": "tinycolor"
-
     }
 });
 
@@ -32,7 +31,8 @@ define([
 		"createQuestionPanel",
 		"Chart",
 		"moCharts",
-		"userPanel"
+		"userPanel",
+		'goog!visualization,1,packages:[corechart,geochart]'
 		],
 		function(
 		$,
@@ -46,9 +46,9 @@ define([
 		createQuestionPanel,
 		Chart,
 		moCharts,
-		userPanel
+		userPanel,
+		goog
 		) {
-
 
 	var app = new Object();
 	app.MAP, app.questions, app.maptype = "subs", app.curIndex, app.mapossumLayer, app.curlatlon, app.bh = [];
@@ -435,6 +435,8 @@ define([
 		$( "#mainpanel" ).css({"height": mapheight + "px"});
 		$( "#control" ).css({"height": mapheight + "px"});
 		$( "#maptitle" ).css({"width": titleWidth + "px"});
+		
+		cp.resize();
 
 	};
 
