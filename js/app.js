@@ -53,9 +53,18 @@ define([
 	var app = new Object();
 	app.MAP, app.questions, app.maptype = "subs", app.curIndex, app.mapossumLayer, app.curlatlon, app.bh = [];
 	app.previousPanel = new Array();
-	app.loggedIn = 0;
+	app.loggedIn = -1;
 	var questionsGrid, clicked, userAcc=[],  mapAdded = false, legendsize;
+	
+	localStorage.removeItem("userID");
+	
+	if (localStorage.userID == undefined) {
+		app.loggedIn = -1;
+	} else {
+		app.loggedIn = localStorage.userID;
+	}
 
+	
 	var ap = new answerPanel("answerpanel", app);
 
 	var cqp = new createQuestionPanel("addpanel", app);
@@ -63,6 +72,8 @@ define([
 	var cp = new moCharts("chartspanel", app);
 	
 	var loginPanel = new loginModel(app);
+	
+	var up = new userPanel("userpanel", app);
 
     setup = function() {
 
@@ -361,7 +372,7 @@ define([
 	transitionTo = function(buttonClicked) {
 		app.previousPanel.push(buttonClicked);
 	
-		if((buttonClicked == "userbutton" || buttonClicked == "addbutton") && app.loggedIn == 0){
+		if((buttonClicked == "userbutton" || buttonClicked == "addbutton") && app.loggedIn == -1){
 			clicked = buttonClicked;
 			loginPanel.show();
 			//$('#loginModal').modal('show')

@@ -3,9 +3,11 @@
 	    <div class="modal-content">
 		      <div class="modal-header">
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h4 class="modal-title">Login</h4>
+		        <h4 class="modal-titl login">Login</h4>
+				<h4 class="modal-title signup">Sign up</h4>
 		      </div>
-			  <div class="form-group">
+
+			  <div class="form-group" style="padding-top:10px">
 			    <label for="txtUsername">Email address</label>
 			    <input type="email" class="form-control" id="txtUsername" placeholder="Enter email">
 			  </div>
@@ -13,7 +15,24 @@
 			    <label for="txtPassword">Password</label>
 			    <input type="password" class="form-control" id="txtPassword" placeholder="Password">
 			  </div>
-
+			<div class="signup">
+			  <div class="form-group">
+			    <label for="txtPassword2">Verify Password</label>
+			    <input type="password" class="form-control" id="txtPassword2" placeholder="Password">
+			  </div>
+				<div class="form-group">
+					<label for="txtFirstName">First Name</label>
+					<input type="email" class="form-control" id="txtFirstName" placeholder="Enter email">
+				  </div>
+				  <div class="form-group">
+					<label for="txtLastName">Last Name</label>
+					<input type="password" class="form-control" id="txtLastName" placeholder="Password">
+				  </div>
+				  <div class="form-group">
+					<label for="txtAffiliation">Affiliation</label>
+					<input type="password" class="form-control" id="txtAffiliation" placeholder="Password">
+				  </div>
+			</div>
 			
 			<div class="form-group">
 			<div>
@@ -32,10 +51,18 @@
 			</div>		
 			
 	      	<div class="modal-footer">
-				<button type="button" class="btn btn-info" id="verify">Sign Up</button>
+			<div class="login">
+				<button type="button" class="btn btn-info GosignupButton" id="verify">I need an account (Sign Up)</button>
 	        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        	<button type="button" class="btn btn-primary" id="verify">Login</button>
+	        	<button type="button" class="btn btn-primary loginButton" id="verify">Login</button>
+			</div>
+			<div class="signup">	
+				<button type="button" class="btn btn-info GologinButton" id="verify">I already have an account (Login)</button>
+	        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        	<button type="button" class="btn btn-primary signinButton" id="verify">Sign Up</button>
+			</div>	
 	      	</div>
+			
 	  	</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->

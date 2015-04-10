@@ -1,5 +1,11 @@
-
-define(function () {
+define("userPanel", 
+	[
+		"text!templates/userPanel.html",
+		"injectCSS"
+	], function (
+		html,
+		injectCSS
+	) {
 	
     function userPanel(div, app) {
   
@@ -9,6 +15,8 @@ define(function () {
 
 		this.div = $(div);
 
+		//injectCSS(css);
+		this.div.append($(html));
 		
     }
  
