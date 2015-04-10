@@ -30,10 +30,11 @@ define("loginModel",
 		
 		// if app.user == undefined then open login model.
 		
+		this.panel.find(".loginButton").bind( "click", $.proxy( this.attemptLogin, this ) )
+		this.panel.find(".signupButton").bind( "click", $.proxy( this.showSignup, this ) )
+		
     }
  
-
-
  
     loginModel.prototype = {
 
@@ -42,6 +43,19 @@ define("loginModel",
 		show: function() {
 		
 			this.panel.modal('show')
+		
+		},
+		
+		attemptLogin: function() {
+
+			alert("LOGIN");
+		
+		},
+		
+		showSignup: function() {
+
+			this.panel.find(".login").hide();
+			this.panel.find(".signup").show();
 		
 		}
      
