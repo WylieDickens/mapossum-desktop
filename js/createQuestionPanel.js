@@ -50,6 +50,8 @@ define("createQuestionPanel",
 		this.questionText = this.div.find('[data-api="question"]');
 		this.questionText.bind("click",$.proxy( function() {this.removeClass( "redinvalid" )}, this.questionText ) )
 		
+		this.app = app;
+		
 		
     }
  
@@ -159,7 +161,7 @@ define("createQuestionPanel",
 		//http://localhost:8080/addquestion?userid=-4&question=Test&hidden=true
 		
 		addQSubmit = new Object();
-		addQSubmit.userid = -10 ;//app.userid;
+		addQSubmit.userid = this.app.loggedIn;
 		addQSubmit.hidden = subData.hidden;
 		addQSubmit.question = subData.qtext;
 		addQSubmit.explain = subData.explain;
