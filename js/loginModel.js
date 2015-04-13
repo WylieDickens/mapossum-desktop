@@ -70,6 +70,8 @@ define("loginModel",
 			} else {
 			
 				this.processLogin(data);
+				refpanel = this.app.previousPanel.pop()
+				transitionTo(refpanel)
 			
 			}
 		
@@ -79,6 +81,7 @@ define("loginModel",
 		
 			console.log(data);
 			localStorage.userID = data.userid;
+			this.app.loggedIn = data.userid;
 			this.panel.modal('hide');
 		
 		},

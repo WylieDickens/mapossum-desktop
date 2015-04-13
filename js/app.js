@@ -56,7 +56,7 @@ define([
 	app.loggedIn = -1;
 	var questionsGrid, clicked, userAcc=[],  mapAdded = false, legendsize;
 	
-	localStorage.removeItem("userID");
+	//localStorage.removeItem("userID");
 	
 	if (localStorage.userID == undefined) {
 		app.loggedIn = -1;

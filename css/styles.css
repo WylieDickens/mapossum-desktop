@@ -87,6 +87,12 @@ p {
 	padding:5px;	
 }
 
+.logbut{
+	position:absolute;
+	right:5px;
+	top: 5px;
+}
+
 #mapbutton {
 	background-image: url("../resources/images/map-icon.png");
 }
