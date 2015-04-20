@@ -65,15 +65,15 @@ define([
 	}
 
 	
-	var ap = new answerPanel("answerpanel", app);
+	app.ap = new answerPanel("answerpanel", app);
 
-	var cqp = new createQuestionPanel("addpanel", app);
+	app.cqp = new createQuestionPanel("addpanel", app);
 
-	var cp = new moCharts("chartspanel", app);
+	app.cp = new moCharts("chartspanel", app);
 	
-	var loginPanel = new loginModel(app);
+	app.loginPanel = new loginModel(app);
 	
-	var up = new userPanel("userpanel", app);
+	app.up = new userPanel("userpanel", app);
 
     setup = function() {
 
@@ -183,7 +183,7 @@ define([
 
 					}).end().find(".command-chart").on("click", function(e)
 					{
-						cp.fetchdata($(this).data("row-id"));
+						app.cp.fetchdata($(this).data("row-id"));
             transitionTo("chartsbutton");
             cqid = $(this).data("row-id")
 						$.each(app.questions, function( index, value ) {
@@ -286,7 +286,7 @@ define([
 		}
 		else{
 			changeQuestion(app.questions[app.curIndex].qid);
-      cp.fetchdata(app.questions[app.curIndex].qid)
+      app.cp.fetchdata(app.questions[app.curIndex].qid)
 		}
 		$("#maptitle").html( '<center>' + row.question + '</center>' );
 		$("#maptitle").css('font-size', "30px");
@@ -296,7 +296,7 @@ define([
 
 		highlightCurrentRow();
 		getLegend(app.questions[app.curIndex].qid);
-		ap.gotoQuestion(app.questions[app.curIndex].qid);
+		app.ap.gotoQuestion(app.questions[app.curIndex].qid);
 
 		if (zoom.center == undefined) {
 			getExtent(app.questions[app.curIndex].qid)
@@ -374,7 +374,7 @@ define([
 	
 		if((buttonClicked == "userbutton" || buttonClicked == "addbutton") && app.loggedIn == -1){
 			clicked = buttonClicked;
-			loginPanel.show();
+			app.loginPanel.show();
 			//$('#loginModal').modal('show')
 			return
 		}
@@ -454,7 +454,7 @@ define([
 		$( "#control" ).css({"height": mapheight + "px"});
 		$( "#maptitle" ).css({"width": titleWidth + "px"});
 		
-		cp.resize();
+		app.cp.resize();
 
 	};
 
