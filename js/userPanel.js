@@ -26,7 +26,7 @@ define("userPanel",
 		
 		}
 
-		
+
     }
  
 
@@ -73,7 +73,7 @@ define("userPanel",
 	
 		this.tableBody.append($(insertRows));
 		
-		
+		app = this.app;
 		
 		gridder = $("#grid-user").bootgrid({
 		selection: true,
@@ -81,35 +81,82 @@ define("userPanel",
 		formatters: {
         "commands": function(column, row)
         {
-            return "<button type=\"button\" class=\"btn btn-xs btn-default command-edit\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-pencil\"></span></button> " + 
-                "<button type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.id + "\"><span class=\"fa fa-trash-o\"></span></button>";
+			console.log(row);
+            return "<button type=\"button\" class=\"btn btn-xs btn-default command-map\" data-row-question=\"" + row.question + "\" data-row-id=\"" + row.qid + "\"><span class=\"fa fa-globe\"></span></button> " +
+						   "<button type=\"button\" class=\"btn btn-xs btn-default command-chart\" data-row-question=\"" + row.question + "\" data-row-id=\"" + row.qid + "\"><span class=\"fa fa-bar-chart\"></span></button>" +
+						   "<button style='margin-left:4px' type=\"button\" class=\"btn btn-xs btn-default command-download\" data-row-id=\"" + row.qid + "\"><span class=\"fa fa-cloud-download\"></span></button>" 
+						   //+ "<button style='margin-left:4px' type=\"button\" class=\"btn btn-xs btn-default command-delete\" data-row-id=\"" + row.qid + "\"><span class=\"fa fa-trash-o\"></span></button>";
         }
     }
 	}).on("loaded.rs.jquery.bootgrid", function()
 	{
 		/* Executes after data is loaded and rendered */
 		console.log(gridder);
-		gridder.find(".command-edit").on("click", function(e)
+		gridder.find(".command-map").on("click", function(e)
+					{
+						console.log(app);
+						cqid = $(this).data("row-id")
+						changeQuestion(cqid);
+						app.cp.fetchdata(cqid)
+						$("#maptitle").html( '<center>' + $(this).data("row-question") + '</center>' );
+						$("#maptitle").css('font-size', "30px");
+						$("#maptitle").autoSizr();
+
+
+						//highlightCurrentRow(); unhilight row
+						getLegend(cqid);
+						app.ap.gotoQuestion(cqid);
+
+						getExtent(cqid);
+						transitionTo("mapbutton");
+
+					}).end().find(".command-chart").on("click", function(e, b)
 		{
-			alert("You pressed edit on row: " + $(this).data("row-id"));
+						$("#maptitle").html( '<center>' + $(this).data("row-question") + '</center>' );
+						$("#maptitle").css('font-size', "30px");
+						$("#maptitle").autoSizr();
+			app.cp.fetchdata($(this).data("row-id"));
+            transitionTo("chartsbutton");
+		}).end().find(".command-download").on("click", function(e)
+		{
+						link = document.createElement("a")
+						link.href = "http://services.mapossum.org/download/" + $(this).data("row-id") + ".csv"
+						link.click()
+						$('#downloadModal').modal('show');
 		}).end().find(".command-delete").on("click", function(e)
 		{
 			alert("You pressed delete on row: " + $(this).data("row-id"));
 		});
-	}).on("selected.rs.jquery.bootgrid", function(e, rows)
-	{
-		var rowIds = [];
-		for (var i = 0; i < rows.length; i++)
-		{
-			rowIds.push(rows[i].id);
-		}
-		alert("Select: " + rowIds.join(","));
-	});
+	}); //.on("selected.rs.jquery.bootgrid", function(e, rows)
+	//{
+	//	console.log(rows);
+	//	var rowIds = [];
+	//	for (var i = 0; i < rows.length; i++)
+	//	{
+	//		rowIds.push(rows[i].id);
+	//	}
+	//	alert("Select: " + rowIds.join(","));
+	//});
 		
 		this.grid = gridder;
 		
+		$('[data-toggle="tooltip"]').tooltip();
+		
+		$("#createSurveyBut").on("click", $.proxy(function() {
+			checkers = $(this.div).find("tbody input:checked");
+			
+			$.each(checkers, function( index, cbox ) {
+					console.log(cbox.value);
+				});
+				
+			console.log("done");
+		
+			}, this));
+		
 		}
      
+
+		
 		
     };
 	
