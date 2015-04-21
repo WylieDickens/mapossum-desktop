@@ -63,7 +63,6 @@ define([
 	} else {
 		app.loggedIn = localStorage.userID;
 	}
-
 	
 	app.ap = new answerPanel("answerpanel", app);
 
@@ -74,6 +73,22 @@ define([
 	app.loginPanel = new loginModel(app);
 	
 	app.up = new userPanel("userpanel", app);
+	
+	$("#logbutton").on("click", function() {
+	
+	// add code to update login button
+	
+		if (app.loggedIn == -1) {
+		
+			app.loginPanel.show();
+		
+		} else {
+		
+			app.loggedIn = -1;
+			localStorage.removeItem("userID");
+		}
+	
+	}) 
 
     setup = function() {
 

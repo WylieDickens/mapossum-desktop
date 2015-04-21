@@ -34,6 +34,8 @@ define("loginModel",
 		this.panel.find(".loginButton").bind( "click", $.proxy( this.attemptLogin, this ) )
 		this.panel.find(".GosignupButton").bind( "click", $.proxy( this.showSignup, this ) )
 		this.panel.find(".GologinButton").bind( "click", $.proxy( this.showLogin, this ) )
+		this.panel.find(".signinButton").bind( "click", $.proxy( this.attemptSignUp, this ) )
+		
 
 		this.panel.find("input").bind("click",function() {$(this).removeClass( "redinvalid" )})
 		
@@ -47,6 +49,37 @@ define("loginModel",
 		show: function() {
 		
 		  this.panel.modal('show');	
+		
+		},
+
+		attemptSignUp: function() {
+		
+			username = this.panel.find("#txtUsername")[0].value;
+			password = this.panel.find("#txtPassword")[0].value;
+			password2 = this.panel.find("#txtPassword2")[0].value;
+			fname = this.panel.find("#txtFirstName")[0].value;
+			lname = this.panel.find("#txtLastName")[0].value;
+			aff = this.panel.find("#txtAffiliation")[0].value;
+			
+			if (password != password2) {
+			
+				alert("Passwords Don't Match")
+			
+			} else {
+			
+				$.getJSON("http://services.mapossum.org/adduser", {"email":username,"password":password, "affiliation": aff, "first": fname, "last": lname}, $.proxy(this.processSignUp, this));
+		
+			}
+		
+			//$.getJSON("http://services.mapossum.org/verify", {"email":username,"password":password}, $.proxy(this.processVerify, this));
+		
+		},
+		
+		processSignUp: function(data) {
+		
+			console.log(data);
+
+			this.processVerify(data);			
 		
 		},
 		
@@ -71,7 +104,8 @@ define("loginModel",
 			
 				this.processLogin(data);
 				refpanel = this.app.previousPanel.pop()
-				transitionTo(refpanel)
+				transitionTo(refpanel);
+				this.app.up.updateUser();
 			
 			}
 		

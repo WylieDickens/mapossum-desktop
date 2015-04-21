@@ -15,7 +15,7 @@ define("userPanel",
 
 		this.app = app;
 		this.div = $("#" + div);
-		this.div.empty();
+		
 		//injectCSS(css);
 
 		//make request
@@ -29,15 +29,14 @@ define("userPanel",
 
     }
  
-
-
- 
     userPanel.prototype = {
 
     	constructor: userPanel,
 		
 		updateUser: function() {
 		
+			this.div.empty();
+			
 			getUsersQs = "http://services.mapossum.org/getquestions"
 			
 			getUQSubmit = new Object();
