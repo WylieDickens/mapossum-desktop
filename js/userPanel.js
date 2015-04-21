@@ -150,11 +150,17 @@ define("userPanel",
 		$("#createSurveyBut").on("click", $.proxy(function() {
 			checkers = $(this.div).find("tbody input:checked");
 			
+			qlist = new Array();
 			$.each(checkers, function( index, cbox ) {
-					console.log(cbox.value);
+					qlist.push(cbox.value);
 				});
 				
-			console.log("done");
+			urlout = "http://mapossum.org?qids=" + qlist.join(",")
+			$('#shareModal .modal-content').empty();
+			$('#shareModal .modal-content').append("<p><b>Your survey link:</b><br><a href='" + urlout + "' target='_blank'>" + urlout + "</a></p>");
+			
+			$('#shareModal').modal('show');			
+			//console.log("done");
 		
 			}, this));
 		

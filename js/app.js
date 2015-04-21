@@ -183,7 +183,6 @@ define([
 						zoom.level = hashes[2];
 					}
 
-
 					gotoquestion(app.questions[app.curIndex], zoom);
 					/* Executes after data is loaded and rendered */
 					questionsGrid.find(".command-map").on("click", function(e)
