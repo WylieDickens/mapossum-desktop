@@ -112,16 +112,33 @@ define([
 
 		 $('[data-toggle="tooltip"]').tooltip();
 
+	function getParameterByName(name) {
+		name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+		var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+			results = regex.exec(location.search);
+		return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+	}
+
 		questionsGrid = $("#grid-data").bootgrid({
 			ajax: true,
 			caseSensitive: false,
 			rowCount: [10, 25, 50],
 			requestHandler: function (request) {
 						 //See if hash Exists
+						qids = getParameterByName('qids');
+						console.log(qids);
+						qid = ""
 						if ((window.location.hash != "") && (mapAdded == false)) {
-							hashes = window.location.hash.replace("#","").split("|")
+							hashes = window.location.hash.replace("#","").split("|");
 							qid = hashes[0];
-							request.qids = qid
+							request.qids = qid;
+							request.returnCurrent = true;
+						}
+						if (qids != "") {
+							if (qid != "") {qid = qid + ","}
+						    request.qids = qid + qids;
+							request.logic = "and";
+							request.hidden = true;
 						}
 				request.count = request.rowCount;
 				return(request);

@@ -146,13 +146,12 @@ define("createQuestionPanel",
 				//alert("submit");
 				//this.submitbutton.bind( "click", $.proxy( this.submitQuestion, this ) )
 				this.submitQuestion(subData);
-				
 			} else {
 				//alert("do not submit");
 			}
 			
 		},
-		
+	
 	submitQuestion: function(subData) {
 	
 		console.log(this, subData);
