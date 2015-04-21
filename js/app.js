@@ -355,16 +355,17 @@ define([
 			window.location.hash = app.bh.join("|")
 	}
 
-	highlightCurrentRow = function() {
+	highlightCurrentRow = function(un) {
 
 		questionsGrid.find('tr').each(function( index, el ) {
 			$(el).css({"background": ""})
 		});
 
 
-		cgridrow = questionsGrid.find('[data-row-id=' + app.curIndex + ']')[0]
-		$(cgridrow).css({"background": "#ADCAE2"})
-
+		if (un == undefined) {
+			cgridrow = questionsGrid.find('[data-row-id=' + app.curIndex + ']')[0]
+			$(cgridrow).css({"background": "#ADCAE2"})
+		}
 	}
 
 

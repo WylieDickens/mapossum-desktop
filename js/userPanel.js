@@ -109,20 +109,25 @@ define("userPanel",
 
 						getExtent(cqid);
 						transitionTo("mapbutton");
+						
+						highlightCurrentRow(true);
 
 					}).end().find(".command-chart").on("click", function(e, b)
 		{
 						$("#maptitle").html( '<center>' + $(this).data("row-question") + '</center>' );
 						$("#maptitle").css('font-size', "30px");
 						$("#maptitle").autoSizr();
-			app.cp.fetchdata($(this).data("row-id"));
-            transitionTo("chartsbutton");
+						app.cp.fetchdata($(this).data("row-id"));
+						transitionTo("chartsbutton");
+						highlightCurrentRow(true);
+						
 		}).end().find(".command-download").on("click", function(e)
 		{
 						link = document.createElement("a")
 						link.href = "http://services.mapossum.org/download/" + $(this).data("row-id") + ".csv"
 						link.click()
 						$('#downloadModal').modal('show');
+						
 		}).end().find(".command-delete").on("click", function(e)
 		{
 			alert("You pressed delete on row: " + $(this).data("row-id"));
