@@ -32,12 +32,18 @@ define("answerPanel",
 
 
 		$(this.submit).bind('click', function(){
+			if (app.curlatlon == undefined) {
+
+				alert("You must first set your position.")
+
+			} else {
 			answerPanel.pushAnswer(app, $('input[name=ansRadio]:checked').val() )
 			$('input[name=ansRadio]:checked')[0].checked = false;
 			transitionTo('mapbutton');
+		  }
 		});
 
-		var lp = new locationPanel(this.locationDiv, app);
+		this.app.lp = new locationPanel(this.locationDiv, app);
 
     }
 

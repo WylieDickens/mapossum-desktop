@@ -408,6 +408,12 @@ define([
 	transitionTo = function(buttonClicked) {
 		app.previousPanel.push(buttonClicked);
 
+    if (buttonClicked == "answerbutton") {
+
+      app.lp._refresh();
+
+    }
+
 		if((buttonClicked == "userbutton" || buttonClicked == "addbutton") && app.loggedIn == -1){
 			clicked = buttonClicked;
 			app.loginPanel.show();

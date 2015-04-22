@@ -12,6 +12,7 @@
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/pick-a-color-1.2.3.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css"> -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-bootgrid/1.1.4/jquery.bootgrid.css">
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
@@ -83,8 +84,11 @@
 		<div id="userpanel" class="controlpanel"></div>
 
 		<div id="findpanel" class="controlpanel" style="padding:8px">
+      <span id="crosshairs" class="fa fa-plus fa fa-4x" style="z-index:3000; position:absolute; top:20px; left:20px"></span>
 			<h4 id="findheader"><b>As you move the map, your submission location will be updated to the center of the map. You may have to zoom the map in to get a more precise location. When you're finished, continue on to answer your question.</b></h4>
-			<div id="findmap"></div>
+			<div id="findmap">
+
+      </div>
 		</div>
 
 		<div id="chartspanel" class="controlpanel">
@@ -131,6 +135,12 @@
 				<div class="col-md-4">
 					<h4>Download Responses:</h4>
 					<p>To download a .csv file of the responses to any question, click the download icon on the right side of the questions grid. This will download a .csv file of all the responses to a question that includes location data (latitude/longitude).</p>
+				</div>
+        <div class="col-md-4">
+					<h4>Contact Us:</h4>
+					<p>For questions or ideas contact us:
+            <p><a href="mailto:george.raber@usm.edu" class="ui-link">George Raber</a></p><p>george.raber@usm.edu</p><p><a href="mailto:jfdickens@gmail.com" class="ui-link">James F. Dickens</a> </p><p>jfdickens@gmail.com</p><p><a href="mailto:joby@usm.edu" class="ui-link">Joby Bass</a></p><p>joby@usm.edu</p>
+          </p>
 				</div>
 			</div>
     </div>
