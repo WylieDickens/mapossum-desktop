@@ -31,6 +31,7 @@ define([
 		"createQuestionPanel",
 	//	"Chart",
 		"moCharts",
+		"findPanel",
 		"userPanel",
 		'goog!visualization,1,packages:[corechart,geochart]'
 		],
@@ -46,6 +47,7 @@ define([
 		createQuestionPanel,
 	//	Chart,
 		moCharts,
+		findPanel,
 		userPanel,
 		goog
 		) {
@@ -55,40 +57,42 @@ define([
 	app.previousPanel = new Array();
 	app.loggedIn = -1;
 	var questionsGrid, clicked, userAcc=[],  mapAdded = false, legendsize;
-	
+
 	//localStorage.removeItem("userID");
-	
+
 	if (localStorage.userID == undefined) {
 		app.loggedIn = -1;
 	} else {
 		app.loggedIn = localStorage.userID;
 	}
-	
+
 	app.ap = new answerPanel("answerpanel", app);
 
 	app.cqp = new createQuestionPanel("addpanel", app);
 
 	app.cp = new moCharts("chartspanel", app);
-	
+
+	app.fp = new findPanel("findpanel", app);
+
 	app.loginPanel = new loginModel(app);
-	
+
 	app.up = new userPanel("userpanel", app);
-	
+
 	$("#logbutton").on("click", function() {
-	
+
 	// add code to update login button
-	
+
 		if (app.loggedIn == -1) {
-		
+
 			app.loginPanel.show();
-		
+
 		} else {
-		
+
 			app.loggedIn = -1;
 			localStorage.removeItem("userID");
 		}
-	
-	}) 
+
+	})
 
     setup = function() {
 
@@ -306,7 +310,7 @@ define([
 
 
 	gotoquestion = function(row, zoom){
-	
+
 	if (zoom == undefined) {zoom = {}};
 		if(mapAdded == false){
 			d = new Date();
@@ -403,7 +407,7 @@ define([
 	/* function to change divs */
 	transitionTo = function(buttonClicked) {
 		app.previousPanel.push(buttonClicked);
-	
+
 		if((buttonClicked == "userbutton" || buttonClicked == "addbutton") && app.loggedIn == -1){
 			clicked = buttonClicked;
 			app.loginPanel.show();
@@ -485,8 +489,9 @@ define([
 		$( "#mainpanel" ).css({"height": mapheight + "px"});
 		$( "#control" ).css({"height": mapheight + "px"});
 		$( "#maptitle" ).css({"width": titleWidth + "px"});
-		
+
 		app.cp.resize();
+    app.fp.resize();
 
 	};
 

@@ -82,6 +82,11 @@
 
 		<div id="userpanel" class="controlpanel"></div>
 
+		<div id="findpanel" class="controlpanel" style="padding:8px">
+			<h4 id="findheader"><b>As you move the map, your submission location will be updated to the center of the map. You may have to zoom the map in to get a more precise location. When you're finished, continue on to answer your question.</b></h4>
+			<div id="findmap"></div>
+		</div>
+
 		<div id="chartspanel" class="controlpanel">
       <div class="dropdown charttypeDD" style="z-index:30">
 				<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
@@ -93,11 +98,12 @@
 					<li role="presentation"><a role="menuitem" tabindex="-1" data-charttype="Pie" href="#">Pie Chart</a></li>
 				</ul>
 			</div>
-			
+
 		</div>
 
 		<div id="infopanel" class="controlpanel">
-			<div class="row">
+      <div id = "infopanelinset">
+			<div class="row" style="width:100%">
 				<div class="col-md-12">
 				  <h2>What is the Mapossum?</h2>
 				  <p>The Mapossum allows you to create and answer questions with location location and view the results on a map. You can view the answers at different levels of aggregation (countries, sub countries, and counties).</p>
@@ -127,6 +133,7 @@
 					<p>To download a .csv file of the responses to any question, click the download icon on the right side of the questions grid. This will download a .csv file of all the responses to a question that includes location data (latitude/longitude).</p>
 				</div>
 			</div>
+    </div>
 		</div>
 
 		<div id="mappanel" class="controlpanel">
@@ -159,11 +166,11 @@
 	    </div>
 	  </div>
 	</div>
-	
+
 	<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="shareModal">
 	  <div class="modal-dialog modal-sm">
 	    <div class="modal-content">
-	      
+
 	    </div>
 	  </div>
 	</div>

@@ -56,8 +56,13 @@ define(function () {
 		this.changeLocation = $('<div class="buttonLoc"><button type="submit" class="btn btn-default" id="updateLoc">Update Your Submission Location</button></div>')
 		this.div.append(this.changeLocation)
 		
-		
 		navigator.geolocation.getCurrentPosition(setlocation,showError);
+
+		console.log("UUUU", $("#updateLoc"))
+
+		$("#updateLoc").on("click", function() {
+			transitionTo('findpanel')
+		})	
 		
     }
  
